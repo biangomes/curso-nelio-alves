@@ -1799,3 +1799,202 @@ R.: **reuso** e **polimorfismo**. Este entra pq a superclasse genérica nos perm
 Métodos que não possuem implementação. Estes precisam ser abstratos quando a classe é genérica demais para conter a sua implementação.
 
 Se uma classe possuir **pelo menos um método abstrato**, então esta classe **também é abstrata**.
+
+**Código da aula 165**
+
+`Shape.java`
+
+```java
+package secao14.exercicios.entities;
+
+import secao14.exercicios.entities.enums.Color;
+
+public abstract class Shape {
+    private Color color;
+
+    public Shape() {
+    }
+
+    public Shape(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public abstract Double area();
+}
+
+```
+
+`Circle.java`
+
+```java
+package secao14.exercicios.entities;
+
+import secao14.exercicios.entities.enums.Color;
+
+public class Circle extends Shape {
+
+    private Double radius;
+
+    public Circle() {
+        super();
+    }
+
+    public Circle(Color color, Double radius) {
+        super(color);
+        this.radius = radius;
+    }
+
+    public Double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(Double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public Double area() {
+        return Math.PI * Math.pow(radius, 2);
+    }
+
+    @Override
+    public String toString() {
+        return "Radius: " + String.format("%.2f", radius)
+                + " Area = " + radius + " x " + String.format("%.2f", Math.PI)
+                + " = " + String.format("%.2f", area());
+    }
+}
+
+```
+
+`Rectangule.java`
+
+```java
+package secao14.exercicios.entities;
+
+import secao14.exercicios.entities.enums.Color;
+
+public class Rectangule extends Shape {
+
+    private Double width;
+    private Double height;
+
+    public Rectangule() {
+        super();
+    }
+
+    public Rectangule(Color color, Double width, Double height) {
+        super(color);
+        this.width = width;
+        this.height = height;
+    }
+
+    public Double getWidth() {
+        return width;
+    }
+
+    public void setWidth(Double width) {
+        this.width = width;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    @Override
+    public Double area() {
+        return width * height;
+    }
+
+    @Override
+    public String toString() {
+        return "Width: " + String.format("%.2f", width)
+                + " Height: " + String.format("%.2f", height)
+                + " Area = " + width + " x " + height
+                + " = " + String.format("%.2f", area());
+    }
+}
+
+```
+
+`Color.java`
+
+```java
+package secao14.exercicios.entities.enums;
+
+public enum Color {
+    BLACK,
+    BLUE,
+    RED;
+}
+
+```
+
+`MainShape.java`
+
+```java
+package secao14.exercicios.application;
+
+import secao14.exercicios.entities.Circle;
+import secao14.exercicios.entities.Rectangule;
+import secao14.exercicios.entities.Shape;
+import secao14.exercicios.entities.enums.Color;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class MainShape {
+    public static void main(String[] args) {
+
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
+
+        List<Shape> list = new ArrayList<Shape>();
+
+        System.out.println("Enter the number of shapes: ");
+        int n = sc.nextInt();
+
+        for (int i=0; i<n; i++) {
+            System.out.println("Shape of #" + i + " data: ");
+            System.out.print("Rectangule or Circle (r/c)? ");
+            char ch = sc.next().charAt(0);
+            System.out.print("Color (BLACK/BLUE/RED): ");
+            Color color = Color.valueOf(sc.next());
+
+            if (ch == 'r') {
+                System.out.println("Enter the width: ");
+                double width = sc.nextDouble();
+                System.out.println("Enter the height: ");
+                double height = sc.nextDouble();
+
+                list.add(new Rectangule(color, width, height));
+            } else {
+                System.out.print("Enter the radius: ");
+                list.add(new Circle(color, sc.nextDouble()));
+            }
+        }
+
+        for (Shape shape : list) {
+            System.out.println(shape);
+        }
+
+        sc.close();
+    }
+}
+
+```
+

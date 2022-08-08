@@ -1,32 +1,48 @@
 package secao14.exercicios.entities;
 
+import secao14.exercicios.entities.enums.Color;
+
 public class Rectangule extends Shape {
 
-    private Double largura;
-    private Double altura;
+    private Double width;
+    private Double height;
 
     public Rectangule() {
         super();
     }
 
-    public Double getLado() {
-        return largura;
+    public Rectangule(Color color, Double width, Double height) {
+        super(color);
+        this.width = width;
+        this.height = height;
     }
 
-    public void setLado(Double largura) {
-        this.largura = largura;
+    public Double getWidth() {
+        return width;
     }
 
-    public Double getAltura() {
-        return altura;
+    public void setWidth(Double width) {
+        this.width = width;
     }
 
-    public void setAltura(Double altura) {
-        this.altura = altura;
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
     }
 
     @Override
     public Double area() {
-        return largura * altura;
+        return width * height;
+    }
+
+    @Override
+    public String toString() {
+        return "Width: " + String.format("%.2f", width)
+                + " Height: " + String.format("%.2f", height)
+                + " Area = " + width + " x " + height
+                + " = " + String.format("%.2f", area());
     }
 }
