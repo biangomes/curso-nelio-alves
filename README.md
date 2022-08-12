@@ -1998,3 +1998,75 @@ public class MainShape {
 
 ```
 
+# Seção 15: Tratamento de Exceções
+
+### Exceções
+
+Uma exceção é qualquer **condição de erro** ou **comportamento inesperado** encontrado por um programa **em execução**.
+
+Em Java, uma exceção é um **objeto herdado da classe**:
+
+- `java.lang.Exception`: o compilador obriga a **tratar** ou **propagar**;
+- `java.lang.RuntimeException`: o compilador **não** obriga a tratar ou propagar.
+
+Quando lançada, uma exceção é propagada na **pilha de chamadas de métodos em execução**, até que ela seja capturada/tratada ou o programa seja encerrado.
+
+A exception `IndexOutOfBoundsException` é quando se tenta acessar uma posição que **não existe**, ou seja, ultrapassa o `length`. Já a exception `NullPointerException` é quando se é tentado acessar uma variável que recebe `Null`.
+
+#### Por que exceções?
+
+Trata-se de uma boa prática, pois permite que os erros sejam tratados de forma consistente e flexível.
+
+- **Vantagens:**
+  - delega a lógica do erro para a classe responsável por conhecer as regras;
+  - Trata de forma organizada exceções de tipos diferentes;
+  - A exceção pode carregar dados quaisquer (???)
+
+### Estrutura try-catch
+
+**Bloco `try`**:  contém o código que representa a **execução normal do trecho** que **pode** acarretar em uma exceção.
+
+**Bloco `catch`**: possui o código a ser executado caso a **exceção ocorra**.
+
+**Sintaxe**
+
+```java
+try {
+    ...
+}
+catch (Exception e) {
+    ...
+}
+catch (Exception e) {
+    ...
+}
+```
+
+**Código da aula:**
+
+```java
+package secao15.application;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class ExceptionDemo {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            String[] vect = sc.nextLine().split(" ");
+            int posicao = sc.nextInt();
+            System.out.println(vect[posicao]);
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Posição inválida!");
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Input error!");
+        }
+        sc.close();
+    }
+}
+```
+
