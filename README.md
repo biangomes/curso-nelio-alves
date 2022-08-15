@@ -2070,3 +2070,107 @@ public class ExceptionDemo {
 }
 ```
 
+### Pilha de chamadas de métodos - stack trace
+
+Para imprimir o stack trace basta seguir o código a seguir:
+
+```java
+public static void method2() {
+        System.out.println("*** METHOD2 STARTS *** ");
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            String[] vect = sc.nextLine().split(" ");
+            int posicao = sc.nextInt();
+            System.out.println(vect[posicao]);
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Posição inválida!");
+            e.printStackTrace();
+            sc.next();
+        }
+```
+
+O `StackTrace` mostra uma estrutura de onde o erro foi disparado e todas as vezes que ele foi "invocado" por assim dizer. No IntelliJ é possível a sua estrutura mais precisamente. Considere todo o código a seguir:
+
+**StackTrace.java**
+
+```java
+package secao15.application;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class StackTrace {
+    public static void main(String[] args) {
+        //System.out.println("*** METHOD STARTS *** ");
+
+        method1();
+        System.out.println("End of program");
+    }
+
+    public static void method1() {
+        System.out.println("*** METHOD1 STARTS *** ");
+        method2();
+        System.out.println("*** METHOD1 ENDS ***");
+    }
+
+    public static void method2() {
+        System.out.println("*** METHOD2 STARTS *** ");
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            String[] vect = sc.nextLine().split(" ");
+            int posicao = sc.nextInt();
+            System.out.println(vect[posicao]);
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Posição inválida!");
+            e.printStackTrace();
+            sc.next();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Input error!");
+        }
+
+        sc.close();
+
+        System.out.println("*** METHOD2 ENDS ***");
+    }
+}
+
+```
+
+![](C:\Users\beatr\Pictures\stacktrace.PNG)
+
+### Bloco `finally`
+
+É um bloco que contém código a ser executado independentemente de ter corrido ou não uma exceção. Exemplo clássico: fechar um arquivo, conexão de banco de dados ou outro recurso específico **ao final do processamento**.
+
+Sintaxe genérica: 
+
+```java
+try {
+    // ...
+}
+catch (ExceptionType e) {
+    // ...
+}
+finally {
+    // ...
+}
+```
+
+> **Extra:** Código base para percorrer as linhas entre um arquivo.
+>
+> ```java
+> File file = new File("C:\\temp\\arq_exemplo.txt");
+> sc = new Scanner(file);
+> 
+> while (sc.hasNextLine()) {
+>     System.out.println(sc.nextLine());
+> }
+> ```
+
+
+
