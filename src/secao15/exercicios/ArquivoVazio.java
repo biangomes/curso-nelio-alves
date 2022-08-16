@@ -1,6 +1,8 @@
-import java.util.Scanner;
+package secao15.exercicios;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class ArquivoVazio {
     public static void main(String[] args) {
@@ -9,11 +11,11 @@ public class ArquivoVazio {
         lerArquivo();
     }
 
-    
+
     // Criando um metodo estatico para ler arquivos
     public static void lerArquivo() {
         Scanner sc = new Scanner(System.in);
-        
+
         try {
             System.out.print("Caminho do arquivo .txt com duas barras invertidas.\nExemplo: C\\Users\\ \n");
             String caminhoDoArquivo = sc.next();
@@ -27,12 +29,9 @@ public class ArquivoVazio {
         }
 
         // TODO: fazer a logica para validar a extensao do arquivo
-
-        /**catch {
-            //logica para verificar a extensao do arquivo
-            break
-        } **/
-        
+        catch (FileNotFoundException e){
+            System.out.println("Arquivo não encontrado: " + e.getMessage());
+         }
         finally {
             if (sc != null) {
                 System.out.println("Fim do método lerArquivo()");
@@ -42,5 +41,5 @@ public class ArquivoVazio {
 
 
         //sc.close();
-        }
     }
+}
