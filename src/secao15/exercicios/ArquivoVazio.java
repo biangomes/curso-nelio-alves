@@ -23,6 +23,15 @@ public class ArquivoVazio {
             File file = new File(caminhoDoArquivo);
             sc = new Scanner(file);
 
+            // Logica para validar a extensao do arquivo
+            String fileExtension = file.toString();
+            int index = fileExtension.lastIndexOf('.');
+            if (index > 0) {
+                String extension = fileExtension.substring(index+1);
+                //System.out.println("Extensão: " + extension);
+            }
+
+            // Leitura das linhas do arquivo
             while (sc.hasNextLine()) {
                 System.out.println(sc.nextLine());
             }
@@ -32,6 +41,9 @@ public class ArquivoVazio {
         catch (FileNotFoundException e){
             System.out.println("Arquivo não encontrado: " + e.getMessage());
          }
+        catch (IllegalArgumentException e) {
+            System.out.println("Illegal Argument Exception: " + e.getMessage());
+        }
         finally {
             if (sc != null) {
                 System.out.println("Fim do método lerArquivo()");

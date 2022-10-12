@@ -2174,3 +2174,74 @@ finally {
 
 
 
+### Criando exceções personalizadas
+
+**Sugestão de pacotes "model"**:
+
+- model
+  - entities
+  - enums
+  - exception
+  - exception
+
+**Questão problema**:
+
+> Fazer um programa para ler os dados de uma reserva de hotel (número do quarto, data
+> de entrada e data de saída) e mostrar os dados da reserva, inclusive sua duração em
+> dias. Em seguida, ler novas datas de entrada e saída, atualizar a reserva, e mostrar
+> novamente a reserva com os dados atualizados. O programa não deve aceitar dados
+> inválidos para a reserva, conforme as seguintes regras:
+> \- Alterações de reserva só podem ocorrer para datas futuras
+> \- A data de saída deve ser maior que a data de entrada
+
+![](C:\Users\beatr\Pictures\reservation-UML.png)
+
+---
+
+### Aula 44. Estruturas repetitivas "Enquanto" (`while`)
+
+Estrutura de controle que **repete** um bloco de comandos **enquanto** a **condição** é **verdadeira**. **Dica de uso:** quando **não** se sabe previamente a quantidade de repetições que serão realizadas.
+
+**Sintaxe**
+
+```java
+while (condicao) {
+    comando 1;
+    comando 2;
+}
+```
+
+
+
+**Problema exemplo:**
+
+> Fazer um programa que leia números inteiros até que um **zero** seja lido. Ao final mostra a soma dos números lidos.
+
+**Minha solução:**
+
+```java
+package secao6;
+
+import java.util.Scanner;
+
+public class aula44 {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("Digite o número com que deseja iniciar: ");
+        int num_escolhido = sc.nextInt();
+        int soma=0;
+
+        while (num_escolhido != 0) {
+            soma += num_escolhido;
+            System.out.println("Digite um número: ");
+            num_escolhido = sc.nextInt();
+        }
+
+        System.out.println("Soma dos números anteriores ao zero: " + soma);
+
+    }
+}
+```
+
