@@ -2305,3 +2305,9 @@ Deixamos `public static int max(...)`, pois é uma função que existirá indepe
 **Scanner** - leitor de texto;
 
 **IOException (Exception)** - exceção padrão, entrada e saída, quando se trabalha com **arquivos**. *Obs.: herda de `Exception`, isto quer dizer que precisa ser tratada*.
+
+### Aula 215. `FileReader` e `BufferedReader`
+
+**FileReader** - stream de leitura de caracteres a partir de arquivos
+
+**BufferedReader (mais rápido)** - é instanciado a partir do **FileReader** e implementa algumas otimizações utilizando buffered memória, tornando-se mais rápido que o FileReader.
