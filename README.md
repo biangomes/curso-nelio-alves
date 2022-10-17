@@ -2297,3 +2297,11 @@ public class funcoes {
 ```
 
 Deixamos `public static int max(...)`, pois é uma função que existirá independente da criação de um objeto.
+
+### Aula 214. Lendo arquivo texto com classe `File` e `Scanner`
+
+**File** - representação abstrata de um arquivo e o seu caminho;
+
+**Scanner** - leitor de texto;
+
+**IOException (Exception)** - exceção padrão, entrada e saída, quando se trabalha com **arquivos**. *Obs.: herda de `Exception`, isto quer dizer que precisa ser tratada*.
