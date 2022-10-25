@@ -2311,3 +2311,169 @@ Deixamos `public static int max(...)`, pois é uma função que existirá indepe
 **FileReader** - stream de leitura de caracteres a partir de arquivos
 
 **BufferedReader (mais rápido)** - é instanciado a partir do **FileReader** e implementa algumas otimizações utilizando buffered memória, tornando-se mais rápido que o FileReader.
+
+### Aula 216. Bloco `try-with-resources`
+
+É um bloco `try` que declara um ou mais recursos, além de **garantir** que esses recursos serão **fechados** ao final do bloco. Disponível a partir do Java 7.
+
+Nessa aula foi usado como base o mesmo código da aula 215.
+
+**Aula215.java**
+
+```java
+package secao17.application;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class Aula215 {
+    public static void main(String[] args) throws IOException {
+
+        String path = "files\\in.txt";
+        FileReader fr = null;
+        BufferedReader br = null;
+
+        try {
+            fr = new FileReader(path);
+            br = new BufferedReader(fr);        // instanciado a partir do FileReader, uma camada de abstracao acima
+
+            String line = br.readLine();
+
+            while (line != null) {
+                System.out.println(line);
+                line = br.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+                if (fr != null) {
+                    fr.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+
+
+**Aula216.java**
+
+```java
+package secao17.application;
+
+import java.io.*;
+
+public class Aula216 {
+    public static void main(String[] args) throws IOException {
+
+        String path = "files\\in.txt";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line = br.readLine();
+
+            while (line != null) {
+                System.out.println(line);
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+```
+
+No escopo do `try` já é instanciado as `streams` de `BufferedReader` e `FileReader`.
+
+### Aula 217. `FileWriter` e `BufferedWriter`
+
+**FileWriter** é uma **stream** de escrita de caracteres de arquivos.
+
+- **Cria/recria** o arquivo: `new FileWriter(path);`
+- **Acrescenta ao arquivo existente:** `new FileWriter(path, true);`
+
+**BufferedWriter** é o mesmo conceito, porém **mais rápido**.
+
+**Aula217.java**
+
+```java
+package secao17.application;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.Buffer;
+
+public class Aula217 {
+    public static void main(String[] args) {
+
+        String[] lines = new String[] {
+                "Good morning",
+                "Good afternoon",
+                "Good night"};
+
+        String path = "files\\out.txt";
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
+            for (String line : lines) {
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+```
+
+Se adicionarmos o argumento `true` no bloco `try`, ele não irá recriar o arquivo, apenas adicionar na última linha.
+
+### Aula 218. Manipulando pastas com `File`
+
+**Aula218.java**
+
+```java
+import java.io.File;
+import java.util.Scanner;
+
+public class Aula218 {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Entre com um caminho de diretório: ");
+        String strPath = sc.nextLine();
+
+        File path = new File(strPath);
+
+        // Coletando todas as pastas contidas no caminho informado pelo usuario
+        File[] folders = path.listFiles(File::isDirectory);
+        System.out.println("FOLDERS:");
+        for (File folder : folders) {
+            System.out.println(folder);
+        }
+
+        // Listagem de ARQUIVOS
+        File[] files = path.listFiles(File::isFile);
+        System.out.println("FILES:");
+        for (File file : files) {
+            System.out.println(file);
+        }
+
+        // Criando SUBPASTAS
+        boolean success = new File(strPath + "\\subdir").mkdir();
+        System.out.println("Diretório criado com sucesso? " + success);
+
+        sc.close();
+    }
+}
+```
+
