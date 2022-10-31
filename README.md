@@ -2438,13 +2438,13 @@ Se adicionarmos o argumento `true` no bloco `try`, ele não irá recriar o arqui
 
 ### Aula 218. Manipulando pastas com `File`
 
-**Aula218.java**
+**secao17.application.Aula218.java**
 
 ```java
 import java.io.File;
 import java.util.Scanner;
 
-public class Aula218 {
+public class secao17.application.Aula218 {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
