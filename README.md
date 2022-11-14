@@ -2502,7 +2502,253 @@ public interface Shape {
 
 ![](C:\Users\beatr\Pictures\Screenpresso\exemplo1-interfaces.png)
 
+**Projeto:** https://github.com/biangomes/rent-a-car
 
+### Aula 228. Inversão de controle e injeção de dependência
+
+Quando associamos uma classe diretamente a outra criamos um **acoplamento forte**. Se a classe concreta mudar, é preciso mudar a classe que se associou a primeira. Seriam **dois pontos de alteração.**
+
+Quando criamos uma interface, a classe que se associou a primeira passa a **implementar** a interface. E a associação, no entanto, se torna entre a interface e a classe primeira criando um **acoplamento fraco**.
+
+No projeto anterior, tínhamos, dentre outros, dois services: `RentalService` e `BrazilTaxService`. Este era o escopo das respectivas entidades:
+
+```java
+package model.services;
+
+import model.entities.CarRental;
+import model.entities.Invoice;
+
+import java.time.Duration;
+
+public class RentalService {
+    private Double pricePerHour;
+    private Double pricePerDay;
+    private BrazilTaxService brazilTaxService;
+
+    public RentalService(double pricePerHour, double pricePerDay, BrazilTaxService brazilTaxService) {
+        this.pricePerHour = pricePerHour;
+        this.pricePerDay = pricePerDay;
+        this.brazilTaxService = brazilTaxService;
+    }
+
+    public void processInvoice(CarRental carRental) {
+
+        double minutes = Duration.between(carRental.getStart(), carRental.getFinish()).toMinutes();
+        double hours = minutes / 60.0;
+
+        double basicPayment;
+
+        if (hours <= 12.0) {
+            basicPayment = pricePerHour * Math.ceil(hours);     // Math.ceil => round number up
+        } else {
+            basicPayment = pricePerDay * Math.ceil(hours/24);
+        }
+
+        double tax = brazilTaxService.tax(basicPayment);
+
+        carRental.setInvoice(new Invoice(basicPayment, tax));
+    }
+}
+```
+
+```java
+package model.services;
+
+public class BrazilTaxService {
+
+    public double tax(double amount) {
+        if (amount <= 100.0) {
+            return amount * 0.2;
+        } else {
+            return amount * 0.15;
+        }
+    }
+}
+```
+
+Por fim, o programa principal, `Program`:
+
+```java
+package application;
+
+import model.entities.CarRental;
+import model.entities.Vehicle;
+import model.services.BrazilTaxService;
+import model.services.RentalService;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Program {
+    public static void main(String[] args) {
+
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
+
+        // Set a datetime pattern
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        System.out.println("Enter with rent data");
+        System.out.print("Car model: ");
+        String carModel = sc.nextLine();
+        System.out.print("Withdraw (dd/MM/yyyy hh:mm): ");
+        LocalDateTime start = LocalDateTime.parse(sc.nextLine(), dtf);
+        System.out.print("Devolution (dd/MM/yyyy hh:mm): ");
+        LocalDateTime end = LocalDateTime.parse(sc.nextLine(), dtf);
+
+
+        CarRental carRental1 = new CarRental(start, end, new Vehicle(carModel));
+
+        System.out.print("Price per hour: ");
+        double pricePerHour = sc.nextDouble();
+        System.out.print("Price per day: ");
+        double pricePerDay = sc.nextDouble();
+
+        RentalService rentalService = new RentalService(pricePerHour, pricePerDay, new BrazilTaxService());
+        rentalService.processInvoice(carRental1);
+        System.out.println("DEBT");
+        System.out.println("Basic payment: " + String.format("%.2f", carRental1.getInvoice().getBasicPayment()));
+        System.out.println("Tax: " + String.format("%.2f", carRental1.getInvoice().getTax()));
+        System.out.println("Total payment: " + String.format("%.2f", carRental1.getInvoice().getTotalPayment()));
+
+        sc.close();
+    }
+}
+```
+
+
+
+No escopo de negócio, quando calculamos o gasto total de se alugar um carro devemos considerar as taxas de juros brasileiras. O problema é que se trocarmos essa taxa de juros, por exemplo taxa de juros dos EUA, teríamos que modificar tanto no programa principal, quanto no `RentalService` e criar um novo `Service` correspondente a nova taxa de juros.
+
+Refatorando a aplicação, foi criada uma `interface` no mesmo domínio dos `services` acima chamada `TaxService`, em que vai generalizar o cálculo de uma taxa de juros. O `BrazilTaxService` permanece, porém ele implementará os métodos da interface. Veja como ficou a seguir: `RentalService`, `TaxService`, `BrazilTaxService` e o `Program`, respectivamente.
+
+```java
+package model.services;
+
+import model.entities.CarRental;
+import model.entities.Invoice;
+
+import java.time.Duration;
+
+public class RentalService {
+    private Double pricePerHour;
+    private Double pricePerDay;
+    private TaxService taxService;
+
+    
+    // o terceiro argumento pode receber BrazilTaxService, EuaTaxService, 	MexicoTaxService, etc...
+    public RentalService(double pricePerHour, double pricePerDay, TaxService taxService) {
+        this.pricePerHour = pricePerHour;
+        this.pricePerDay = pricePerDay;
+        this.taxService = taxService;
+    }
+
+    public void processInvoice(CarRental carRental) {
+
+        double minutes = Duration.between(carRental.getStart(), carRental.getFinish()).toMinutes();
+        double hours = minutes / 60.0;
+
+        double basicPayment;
+
+        if (hours <= 12.0) {
+            basicPayment = pricePerHour * Math.ceil(hours);     // Math.ceil => round number up
+        } else {
+            basicPayment = pricePerDay * Math.ceil(hours/24);
+        }
+
+        double tax = taxService.tax(basicPayment);
+
+        carRental.setInvoice(new Invoice(basicPayment, tax));
+    }
+}
+```
+
+```java
+package model.services;
+
+public interface TaxService {
+    double tax(double amount);
+}
+```
+
+```java
+package model.services;
+
+public class BrazilTaxService implements TaxService {
+
+    public double tax(double amount) {
+        if (amount <= 100.0) {
+            return amount * 0.2;
+        } else {
+            return amount * 0.15;
+        }
+    }
+}
+```
+
+```java
+package application;
+
+import model.entities.CarRental;
+import model.entities.Vehicle;
+import model.services.BrazilTaxService;
+import model.services.RentalService;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Program {
+    public static void main(String[] args) {
+
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
+
+        // Set a datetime pattern
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        System.out.println("Enter with rent data");
+        System.out.print("Car model: ");
+        String carModel = sc.nextLine();
+        System.out.print("Withdraw (dd/MM/yyyy hh:mm): ");
+        LocalDateTime start = LocalDateTime.parse(sc.nextLine(), dtf);
+        System.out.print("Devolution (dd/MM/yyyy hh:mm): ");
+        LocalDateTime end = LocalDateTime.parse(sc.nextLine(), dtf);
+
+
+        CarRental carRental1 = new CarRental(start, end, new Vehicle(carModel));
+
+        System.out.print("Price per hour: ");
+        double pricePerHour = sc.nextDouble();
+        System.out.print("Price per day: ");
+        double pricePerDay = sc.nextDouble();
+
+        RentalService rentalService = new RentalService(pricePerHour, pricePerDay, new BrazilTaxService());
+        rentalService.processInvoice(carRental1);
+        System.out.println("DEBT");
+        System.out.println("Basic payment: " + String.format("%.2f", carRental1.getInvoice().getBasicPayment()));
+        System.out.println("Tax: " + String.format("%.2f", carRental1.getInvoice().getTax()));
+        System.out.println("Total payment: " + String.format("%.2f", carRental1.getInvoice().getTotalPayment()));
+
+        sc.close();
+    }
+}
+```
+
+A interface ficou simples, pois a única responsabilidade dela é **abstrair** o método de cálculo de taxa, haja visto que se precisassemos cuidar de `EuaTaxaService`, por exemplo, ele teria o próprio método de taxa, isto é, com os seus próprios valores e "condicionais".
+
+A metodologia acima é **inversão de controle por meio de construtor**. 
+
+A **inversão de controle** é um padrão de desenvolvimento que consiste em retirar da classe a responsabilidade de instanciar as suas dependências.
+
+A **injeção de dependência**, por sua vez, é uma forma de realizar a inversão de controle: componente **externo** (`TaxService`) instancia a dependência, que é então injetada no objeto "pai". Pode ser implementada de várias formas:
+
+- construtor;
+- classe de instanciação (builder/factory)/
+- container/framework
 
 
 
