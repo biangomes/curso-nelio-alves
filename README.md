@@ -2750,7 +2750,15 @@ A **injeção de dependência**, por sua vez, é uma forma de realizar a invers�
 - classe de instanciação (builder/factory)/
 - container/framework
 
+### Aula 223. Herdar vs Cumprir contrato
 
+**Aspectos em comum entre herança e interfaces:**
+
+- Relação é-um;
+- Generalização/especialização
+- Polimorfismo
+
+A diferença entre essas duas propriedades, herdar e cumprir contrato, se dá 
 
 ### Seções extras
 
