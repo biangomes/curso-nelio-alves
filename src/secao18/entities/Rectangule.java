@@ -5,7 +5,8 @@ public class Rectangule extends Shape {
     private Double width;
     private Double height;
 
-    public Rectangule(Double width, Double height) {
+    public Rectangule(Color color, Double width, Double height) {
+        super(color);
         this.width = width;
         this.height = height;
     }
@@ -27,7 +28,7 @@ public class Rectangule extends Shape {
     }
 
     @Override
-    public Double area() {
+    public double area() {
         return this.height * Math.pow(this.width, 2);
     }
 

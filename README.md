@@ -2758,7 +2758,22 @@ A **injeção de dependência**, por sua vez, é uma forma de realizar a invers�
 - Generalização/especialização
 - Polimorfismo
 
-A diferença entre essas duas propriedades, herdar e cumprir contrato, se dá 
+A semelhança no polimorfismo entre as duas se dá porque, **em tempo de execução**, ambas podem se associar com um objeto **concreto**. 
+
+**Diferença fundamental:**
+
+- Herança: reuso;
+- Interface: contrato a ser cumprido.
+
+Quando criamos uma classe que implementa uma interface, os métodos definidos na interface **não são reutilizados** e sim **implementados**.
+
+O conceito clássico de uma interface é a definição de um contrato.
+
+**Questionamento:**
+
+> E se eu precisar implementar `Shape` como uma interfae, porém também quiser definir uma estrutura comum reutilizável para todas as figuras?
+
+
 
 ### Seções extras
 

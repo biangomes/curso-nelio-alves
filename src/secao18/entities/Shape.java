@@ -3,6 +3,10 @@ package secao18.entities;
 public abstract class Shape {
     private Color color;
 
+    public Shape(Color color) {
+        this.color = color;
+    }
+    
     public Color getColor() {
         return color;
     }
@@ -11,5 +15,5 @@ public abstract class Shape {
         this.color = color;
     }
 
-    public abstract Double area();
+    public abstract double area();
 }

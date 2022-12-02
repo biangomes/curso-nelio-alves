@@ -1,17 +1,20 @@
 package secao18.application;
 
 import secao18.entities.Circle;
+import secao18.entities.Color;
 import secao18.entities.Rectangule;
 import secao18.entities.Shape;
 
 public class Aula219 {
     public static void main(String[] args) {
 
-        Shape c1 = new Circle(2.0);
-        Shape c2 = new Rectangule(4.0, 4.0);
+        Shape c1 = new Circle(Color.BLACK, 2.0);
+        Shape c2 = new Rectangule(Color.WHITE, 3.0, 4.0);
 
-        System.out.println(c1.toString());
-        System.out.println(c2.toString());
+        System.out.println("Circle color: " + c1.getColor());
+        System.out.println("Circle area: " + String.format("%.3f", c1.area()));
+        System.out.println("Rectangule color: " + c2.getColor());
+        System.out.println("Rectangule area: " + String.format("%.3f", c2.area()));
 
 
     }
