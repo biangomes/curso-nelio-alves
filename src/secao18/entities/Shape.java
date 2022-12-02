@@ -1,19 +1,7 @@
 package secao18.entities;
 
-public abstract class Shape {
-    private Color color;
+public interface Shape {
 
-    public Shape(Color color) {
-        this.color = color;
-    }
-    
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public abstract double area();
+    // todo objeto que implementar Shape, deve implementar o metodo abaixo
+    double area();
 }

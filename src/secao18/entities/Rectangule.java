@@ -1,6 +1,6 @@
 package secao18.entities;
 
-public class Rectangule extends Shape {
+public class Rectangule extends AbstractShape {
 
     private Double width;
     private Double height;

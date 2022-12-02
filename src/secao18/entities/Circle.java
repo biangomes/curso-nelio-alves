@@ -1,6 +1,6 @@
 package secao18.entities;
 
-public class Circle extends Shape {
+public class Circle extends AbstractShape {
     private Double radius;
 
     public static final double PI=3.14;

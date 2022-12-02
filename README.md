@@ -2773,6 +2773,55 @@ O conceito clássico de uma interface é a definição de um contrato.
 
 > E se eu precisar implementar `Shape` como uma interfae, porém também quiser definir uma estrutura comum reutilizável para todas as figuras?
 
+Quando criamos a interface já presumimos que o método é **público** e **abstrato**.
+
+
+Supondo que tenhamos uma interface chamada `Shape`:
+
+```java
+package secao18.entities;
+
+public interface Shape {
+
+    // todo objeto que implementar Shape, deve implementar o metodo abaixo
+    double area();
+}
+```
+
+e agora queremos criar uma implementação de `Shape`, mas que tenha estruturas reutilizáveis (conforme questionado).
+
+Para isso criaremos uma classe chamada `AbstractShape`:
+
+```java
+package secao18.entities;
+
+public class AbstractShape implements Shape {
+    
+    private Color color;
+
+    public AbstractShape(Color color) {
+        this.color = color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return this.color;
+    }
+
+    
+}
+```
+
+O compilador irá reclamar, pois, como dito anteriormente, uma interface estabelece **contratos** que devem ser cumpridos por **todas** as classes que a **implementarem** e, nesse caso, a classe `AbstractShape` não implementa o método `area()`. Quem irá implementar são as **classes filhas** AbstractShape. Para resolver o problema apontado pelo compilador, diremos que se trata de uma classe **abstrata**.
+
+```java
+public abstract class AbstractShape implements Shape {
+    // ...
+}
+```
 
 
 ### Seções extras
