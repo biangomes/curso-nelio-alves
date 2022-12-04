@@ -2834,7 +2834,7 @@ Criamos uma classe chamada `Device`, `Printer`, `Scanner` e `ComboDevice`, em qu
 É apresentada a mensagem no IntelliJ após fazer o último passo:
 > Class cannot extend multiple classes
 
-
+Apesar de uma classe não poder estender mais de uma classe, ela pode **implementar** mais de uma **interface**, pois não há reuso na relação entre a classe "filha" e as interfaces. Não é herança e sim cumprimento de contrato.
 
 
 ### Seções extras

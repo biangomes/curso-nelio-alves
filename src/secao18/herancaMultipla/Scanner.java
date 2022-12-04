@@ -1,6 +1,6 @@
 package secao18.herancaMultipla;
 
-public class Scanner extends Device {
+public class Scanner extends Device implements InterfaceScanner {
 
     public Scanner(String serialNumber) {
         super(serialNumber);
@@ -11,6 +11,7 @@ public class Scanner extends Device {
         System.out.println("Scanner processing: " + doc);
     }
 
+    @Override
     public String scan() {
         return "Scanned content";
     }
