@@ -2836,7 +2836,22 @@ Criamos uma classe chamada `Device`, `Printer`, `Scanner` e `ComboDevice`, em qu
 
 Apesar de uma classe não poder estender mais de uma classe, ela pode **implementar** mais de uma **interface**, pois não há reuso na relação entre a classe "filha" e as interfaces. Não é herança e sim cumprimento de contrato.
 
+### AUla 234. Interface Comparable
 
+Implementação básica:
+
+```java
+public interface Comparable<T> {
+	int compareTo(T o);
+}	
+```
+
+
+**Problema motivador**
+> Faça um programa para ler um arquivo contendo nomes de pessoas (um nome por linha), armazenando-os em uma lista. Depois, ordenar os dados dessa lista e mostrá-los ordenadamente na tela. *Nota*: o caminho do arquivo pode ser informado "hardcode".
+
+
+Forma de ordenar uma coleção: `Collections.sort()`.
 ### Seções extras
 
 #### DevDojo - Aula 98: IO pt 01 Classe File para arquivos
