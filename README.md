@@ -2823,6 +2823,19 @@ public abstract class AbstractShape implements Shape {
 }
 ```
 
+### Aula 233. Herança múltipla e o problema do diamante
+
+Quando no diagrama o nome do método está em itálico, quer dizer que é um método **abstrato**. 
+
+**Problema do diamante:** existência do mesmo método em mais de uma superclasse (gera uma ambiguidade). É gerado por **herança múltipla**, que no Java não é permitido.
+
+Criamos uma classe chamada `Device`, `Printer`, `Scanner` e `ComboDevice`, em que a modelagem é `Device` como uma super classe, `Printer` e `Scanner` extendem-na e `ComboDevice` extende de `Printer` e `Scanner`. 
+
+É apresentada a mensagem no IntelliJ após fazer o último passo:
+> Class cannot extend multiple classes
+
+
+
 
 ### Seções extras
 
