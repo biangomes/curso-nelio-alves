@@ -2905,6 +2905,24 @@ public interface Comparable<T> {
 No nosso caso colocamos ao invés de `T` o objeto que queríamos comparar.
 
 
+### Aula 235. Default methods
+
+As interfaces podem conter métodos concretos (+Java 8). Os métodos padrão é prover implementação padrão para métodos, de modo a evitar repetição de implementação em toda classe que implemente a interface; assim como a necessidade de se criar classes abstratas para prover reuso da implementação.
+
+**Problema exemplo:**
+> Fazer um programa para ler uma quantia e a duração em meses de um empréstimo. Informar o valor a ser pago depois de decorrido o prazo do empréstimo, conforme regras de juros do Brasil. A regra de cálculo de juros do Brasil é juro composto padrão de 2% ao mês.
+
+A modelagem matemática deste problema é:
+q * 1.02^{n} 
+
+em que:
+
+ q : saldo;
+
+1.02 : o saldo acrescido de 2%;
+
+n : prazo de pagamento, quantidade de vezes.
+
 ### Seções extras
 
 #### DevDojo - Aula 98: IO pt 01 Classe File para arquivos
