@@ -15,7 +15,8 @@ public class Aula234 {
 
         //List<String> list = new ArrayList<>();
         List<Employee> list = new ArrayList<>();
-        String path = "files/names.txt";
+        //String path = "files/names.txt";
+        String path = "files/funcionarios.csv";
 
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             //String name = br.readLine();
@@ -29,9 +30,9 @@ public class Aula234 {
             }
             Collections.sort(list);
 
-//            for (String s : list) {
-//                System.out.println(s);
-//            }
+            for (Employee emp : list) {
+                System.out.println(emp.getName() + ", " + emp.getSalary());
+            }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

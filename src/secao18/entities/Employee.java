@@ -28,6 +28,7 @@ public class Employee implements Comparable<Employee>{
     // Metodo necessario para utilizar o metodo sort() de Collections
     @Override
     public int compareTo(Employee e) {
-        return name.compareTo(e.getName());
+        //return name.compareTo(e.getName());       // comparando por name
+        return salary.compareTo(e.getSalary());     // comparando por salary
     }
 }

@@ -2852,6 +2852,59 @@ public interface Comparable<T> {
 
 
 Forma de ordenar uma coleção: `Collections.sort()`.
+
+**Método `compareTo()`**: o método `compareTo()` serve para comparar dois objetos com base em um critério estabelecido. Existe uma interface chamada `Comparable` e ela deve ser implementada, bem como o método `compareTO()` deve ser sobrescrito com o seu critério de comparação. Na aula do curso do Nélio Alves, ficou da seguinte forma:
+
+```java
+package secao18.entities;
+
+// implementing Comparable interface
+public class Employee implements Comparable<Employee>{
+    private String name;
+    private Double salary;
+
+    public Employee(String name, Double salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    // Metodo necessario para utilizar o metodo sort() de Collections
+    @Override
+    public int compareTo(Employee e) {
+        return name.compareTo(e.getName());
+    }
+}
+
+```
+
+Na documentação a interface `Comparable` recebe um objeto genérico do tipo `T`: 
+```java
+package java.lang;
+
+public interface Comparable<T> {
+    int compareTo(T var1);
+}
+```
+
+No nosso caso colocamos ao invés de `T` o objeto que queríamos comparar.
+
+
 ### Seções extras
 
 #### DevDojo - Aula 98: IO pt 01 Classe File para arquivos
