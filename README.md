@@ -2923,6 +2923,180 @@ em que:
 
 n : prazo de pagamento, quantidade de vezes.
 
+Para ilustrar essa aula, criamos uma classe chamada `BrazilInterestService` no package `services` em que ela é definida desta maneira:
+
+```java
+package secao18.services;
+
+import java.security.InvalidParameterException;
+
+public class BrazilInterestService {
+    private double interestRate;
+
+    public BrazilInterestService(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public double payment(double amount, int months) {
+        if (months < 1) {
+            throw new InvalidParameterException("Months must be greater than zero");
+        }
+        return amount * Math.pow(1.0+interestRate/100.00, months);
+    }
+}
+```
+
+Ou seja, ela tem como atributo um double chamado `interestRate` que define a **taxa de juros**. Como especificado pelo problema,
+o nosso `interestRate` é de 2%.
+
+Para testar, dentro do package `application` existe a classe `Aula234`:
+
+```java
+package secao18.application;
+
+import secao18.services.BrazilInterestService;
+
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Aula235 {
+    public static void main(String[] args) {
+
+      Locale.setDefault(Locale.US);
+      Scanner sc = new Scanner(System.in);
+
+      BrazilInterestService bis = new BrazilInterestService(2.0);
+      System.out.print("Amount: ");
+      double amount = sc.nextDouble();
+      System.out.print("How many months: ");
+      int months = sc.nextInt();
+
+      System.out.printf("Brazil Payment: R$ %.2f", bis.payment(amount, months));
+
+      sc.close();
+    }
+}
+```
+
+Depois criamos a classe `UsaInterestService` com o mesmo escopo de `BrazilInterestService`, porém considerando o `interestRate`
+de 1%. E aí a classe principal, `Aula234`, ficou desta maneira:
+
+```java
+package secao18.application;
+
+import secao18.services.BrazilInterestService;
+import secao18.services.UsaInterestService;
+
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Aula235 {
+    public static void main(String[] args) {
+
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
+
+        BrazilInterestService bis = new BrazilInterestService(2.0);
+        System.out.print("Amount: ");
+        double amount = sc.nextDouble();
+        System.out.print("How many months: ");
+        int months = sc.nextInt();
+
+        System.out.printf("Brazil Payment: R$ %.2f", bis.payment(amount, months));
+
+        UsaInterestService uis = new UsaInterestService(1.0);
+        System.out.printf("%nUSA Payment: $ %.2f", uis.payment(amount, months));
+
+
+        sc.close();
+    }
+}
+```
+
+Vamos refatorar o nosso código criando uma interface chamada `InterestService` que implementará dois métodos:
+`getInterestRate()` (lembre-se que é a taxa de juros) e o método `payment()` que é quem de fato calculará o pagamento.
+
+Agora nas classes criadas anteriormente, vamos simplesmente acrescentar um `... implements InterestService` e colocar uma *annotation*
+`@Override` acima dos métodos `getInterestRate()` e `payment()` das respectivas classes. Já no programa principal, deixaremos
+as instâncias `bis` e `uis` como do tipo `InterestService`, porém instanciando `BrazilInterestService` e `UsaInterestService` respectivamente.
+
+O objetivo desta aula é chegar até a seguinte refatoração:
+
+Classe `InterestService`:
+```java
+package secao18.services;
+
+import java.security.InvalidParameterException;
+
+public interface InterestService {
+
+    double getInterestRate();
+
+    default double payment(double amount, int months) {
+        if (months < 1) {
+            throw new InvalidParameterException("Months must be greater than zero");
+        }
+
+        return amount * Math.pow(1+getInterestRate()/100.00, months);
+    }
+}
+```
+
+Classe `BrazilInterestService`:
+```java
+package secao18.services;
+
+import java.security.InvalidParameterException;
+
+public class BrazilInterestService implements InterestService {
+    private double interestRate;
+
+    public BrazilInterestService(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    @Override
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+}
+```
+
+Classe `UsaInterestService`:
+
+```java
+package secao18.services;
+
+import java.security.InvalidParameterException;
+
+public class UsaInterestService implements InterestService{
+
+    private double interestRate;
+
+    public UsaInterestService(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    @Override
+    public double getInterestRate() {
+        return this.interestRate;
+    }
+
+}
+```
+
+Veja que deixamos o método `payment()` como default na interface. Apenas deixamos o método `getInterestRate()` em cada uma das classes,
+pois ele terá valores distintos para cada implementação.
+
+Esta é uma forma de se ter **herança múltipla** no Java e as interfaces provém **reuso**.
+
+> Interfaces são bem diferentes das classes **abstratas**. As interfaces não possuem recursos como construtores e atributos.
+
 ### Seções extras
 
 #### DevDojo - Aula 98: IO pt 01 Classe File para arquivos
