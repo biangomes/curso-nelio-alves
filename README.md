@@ -3097,6 +3097,75 @@ Esta é uma forma de se ter **herança múltipla** no Java e as interfaces prov�
 
 > Interfaces são bem diferentes das classes **abstratas**. As interfaces não possuem recursos como construtores e atributos.
 
+
+# Seção 19: Generics, Set e Map
+
+### Aula 238. Introdução aos `Generics`
+
+`Generics` permitem que **classes**, **interfaces** e **métodos** possam ser parametrizados por tipo. Os seus benefícios são:
+- Reuso;
+- Type Safety;
+- Performance.
+
+É muito usado em `Collections`.
+
+```java
+List<String> list = new ArrayList<>();
+list.add("Maria");
+String name = list.get(0);
+```
+
+**Problema motivador:**
+> Deseja-se fazer um programa que leia uma quantidade N, e depois N números inteiros. 
+> Ao final, imprima esses números de forma organizada conforme exemplo. 
+> Em seguida, informar qual foi o primeiro valor informado.
+
+Vamos criar um serviço de impressão chamado `PrintService`.
+
+No package `secao19.service` foi criado a classe `PrintService` desta forma:
+
+```java
+package secao19.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PrintService {
+    private List<Integer> lista = new ArrayList<>();
+
+    public void addValue(Integer value) {
+        lista.add(value);
+    }
+
+    public Integer first() {
+        if (lista.isEmpty()) {
+            throw new IllegalStateException("List is empty");
+        }
+        return lista.get(0);
+    }
+
+    public void print() {
+        System.out.print("[");
+
+        if (!lista.isEmpty()) {
+            System.out.print(lista.get(0));
+        }
+        for (int i=1; i<lista.size(); i++) {
+            System.out.println(", " + lista.get(i));
+        }
+
+    }
+}
+```
+
+e no package `secao19.application` criamos a classe `Aula238` instanciando o `PrintService`.
+
+Porém da forma acima, se tentarmos colocar um dado na lista do tipo `String` ele dará erro.
+
+Uma eventual solução para isso é mudar o tipo de `List<>` para o tipo `Object`. No Java, **tudo é `Object`**.
+
+
+
 ### Seções extras
 
 #### DevDojo - Aula 98: IO pt 01 Classe File para arquivos
