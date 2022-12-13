@@ -9,18 +9,21 @@ public class Aula238 {
 
         Scanner sc = new Scanner(System.in);
 
-        PrintService ps = new PrintService();
+        //PrintService ps = new PrintService();
+        PrintService<Integer> psInteger = new PrintService<>();
 
-        System.out.print("How many values: ");
+        System.out.print("How many values does list have: ");
         int n = sc.nextInt();
 
+        //ps.addValue("Maria");
+
         for (int i=0; i<n; i++) {
-            String value = sc.next();
-            ps.addValue(value);
+            int value = sc.nextInt();
+            psInteger.addValue(value);
         }
 
-        ps.print();
-        System.out.println("First: " + ps.first());
+        psInteger.print();
+        System.out.println("First: " + psInteger.first());
 
         sc.close();
     }

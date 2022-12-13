@@ -3164,7 +3164,48 @@ Porém da forma acima, se tentarmos colocar um dado na lista do tipo `String` el
 
 Uma eventual solução para isso é mudar o tipo de `List<>` para o tipo `Object`. No Java, **tudo é `Object`**.
 
+O problema de deixar como `Object` é que qualquer valor passado ele irá aceitar. Suponhamos que, no fim das contas, 
+queiramos que o nosso array seja apenas de inteiros. Se por alguma razão, adicionar antes uma string ele deixará passar.
 
+O problema acima pode ser solucionado com generics.
+
+A classe `PrintService` utilizando generics fica da seguinte forma:
+
+```java
+package secao19.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PrintService<T> {
+    // List<T> agora é uma lista de tipo genérico
+    private List<T> lista = new ArrayList<>();
+
+    public void addValue(T value) {
+        lista.add(value);
+    }
+
+    public T first() {
+        if (lista.isEmpty()) {
+            throw new IllegalStateException("List is empty");
+        }
+        return lista.get(0);
+    }
+
+    public void print() {
+        System.out.print("[");
+
+        if (!lista.isEmpty()) {
+            System.out.print(lista.get(0));
+        }
+        for (int i=1; i<lista.size(); i++) {
+            System.out.print(", " + lista.get(i));
+        }
+        System.out.print("]\n");
+
+    }
+}
+```
 
 ### Seções extras
 
