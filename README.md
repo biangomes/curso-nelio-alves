@@ -2836,7 +2836,7 @@ Criamos uma classe chamada `Device`, `Printer`, `Scanner` e `ComboDevice`, em qu
 
 Apesar de uma classe não poder estender mais de uma classe, ela pode **implementar** mais de uma **interface**, pois não há reuso na relação entre a classe "filha" e as interfaces. Não é herança e sim cumprimento de contrato.
 
-### AUla 234. Interface Comparable
+### Aula 234. Interface Comparable
 
 Implementação básica:
 
@@ -3206,6 +3206,55 @@ public class PrintService<T> {
     }
 }
 ```
+
+### Aula 239: Generics delimitados
+
+**Problema motivador:**
+> Uma empresa de consultoria deseja avaliar a performance de produtos, funcionários, dentre outras coisas. Um dos cálculos que ela precisa é encontrar 
+> o maior dentre um conjunto de elementos. Fazer um programa que leia um 
+> conjunto de produtos a partir de um arquivo, conforme exemplo, e depois mostre o mais caro deles.
+
+Quando se trata de um método estático, não é necessário instanciar a classe.
+
+Lógica para implementar a busca do maior número inteiro dentro de um array:
+
+```java
+package secao19.service;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class CalculationService {
+
+    public static Integer max(List<Integer> list) {
+
+        // Logica defensiva
+        if (list.isEmpty()) {
+            throw new IllegalStateException("List can't be empty");
+        }
+
+        Integer max = list.get(0);
+        for (Integer item : list) {
+            if (item.compareTo(max) > 0) {
+                max = item;
+            }
+        }
+
+        return max;
+    }
+}
+```
+
+O problema motivador indica que queremos encontrar o maior em uma lista de **produtos**.
+
+Para ler e armazenar em uma lista os dados de uma entidade, que está no formato CSV, podemos fazer:
+
+```java
+String[] fields = line.split(",");
+productList.add(new Product(fields[0], Double.parseDouble(fields[1])));
+```
+
+
 
 ### Seções extras
 
