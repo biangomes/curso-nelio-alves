@@ -1799,3 +1799,1464 @@ R.: **reuso** e **polimorfismo**. Este entra pq a superclasse genérica nos perm
 Métodos que não possuem implementação. Estes precisam ser abstratos quando a classe é genérica demais para conter a sua implementação.
 
 Se uma classe possuir **pelo menos um método abstrato**, então esta classe **também é abstrata**.
+
+**Código da aula 165**
+
+`Shape.java`
+
+```java
+package secao14.exercicios.entities;
+
+import secao14.exercicios.entities.enums.Color;
+
+public abstract class Shape {
+    private Color color;
+
+    public Shape() {
+    }
+
+    public Shape(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public abstract Double area();
+}
+
+```
+
+`Circle.java`
+
+```java
+package secao14.exercicios.entities;
+
+import secao14.exercicios.entities.enums.Color;
+
+public class Circle extends Shape {
+
+    private Double radius;
+
+    public Circle() {
+        super();
+    }
+
+    public Circle(Color color, Double radius) {
+        super(color);
+        this.radius = radius;
+    }
+
+    public Double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(Double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public Double area() {
+        return Math.PI * Math.pow(radius, 2);
+    }
+
+    @Override
+    public String toString() {
+        return "Radius: " + String.format("%.2f", radius)
+                + " Area = " + radius + " x " + String.format("%.2f", Math.PI)
+                + " = " + String.format("%.2f", area());
+    }
+}
+
+```
+
+`Rectangule.java`
+
+```java
+package secao14.exercicios.entities;
+
+import secao14.exercicios.entities.enums.Color;
+
+public class Rectangule extends Shape {
+
+    private Double width;
+    private Double height;
+
+    public Rectangule() {
+        super();
+    }
+
+    public Rectangule(Color color, Double width, Double height) {
+        super(color);
+        this.width = width;
+        this.height = height;
+    }
+
+    public Double getWidth() {
+        return width;
+    }
+
+    public void setWidth(Double width) {
+        this.width = width;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    @Override
+    public Double area() {
+        return width * height;
+    }
+
+    @Override
+    public String toString() {
+        return "Width: " + String.format("%.2f", width)
+                + " Height: " + String.format("%.2f", height)
+                + " Area = " + width + " x " + height
+                + " = " + String.format("%.2f", area());
+    }
+}
+
+```
+
+`Color.java`
+
+```java
+package secao14.exercicios.entities.enums;
+
+public enum Color {
+    BLACK,
+    BLUE,
+    RED;
+}
+
+```
+
+`MainShape.java`
+
+```java
+package secao14.exercicios.application;
+
+import secao14.exercicios.entities.Circle;
+import secao14.exercicios.entities.Rectangule;
+import secao14.exercicios.entities.Shape;
+import secao14.exercicios.entities.enums.Color;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class MainShape {
+    public static void main(String[] args) {
+
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
+
+        List<Shape> list = new ArrayList<Shape>();
+
+        System.out.println("Enter the number of shapes: ");
+        int n = sc.nextInt();
+
+        for (int i=0; i<n; i++) {
+            System.out.println("Shape of #" + i + " data: ");
+            System.out.print("Rectangule or Circle (r/c)? ");
+            char ch = sc.next().charAt(0);
+            System.out.print("Color (BLACK/BLUE/RED): ");
+            Color color = Color.valueOf(sc.next());
+
+            if (ch == 'r') {
+                System.out.println("Enter the width: ");
+                double width = sc.nextDouble();
+                System.out.println("Enter the height: ");
+                double height = sc.nextDouble();
+
+                list.add(new Rectangule(color, width, height));
+            } else {
+                System.out.print("Enter the radius: ");
+                list.add(new Circle(color, sc.nextDouble()));
+            }
+        }
+
+        for (Shape shape : list) {
+            System.out.println(shape);
+        }
+
+        sc.close();
+    }
+}
+
+```
+
+# Seção 15: Tratamento de Exceções
+
+### Exceções
+
+Uma exceção é qualquer **condição de erro** ou **comportamento inesperado** encontrado por um programa **em execução**.
+
+Em Java, uma exceção é um **objeto herdado da classe**:
+
+- `java.lang.Exception`: o compilador obriga a **tratar** ou **propagar**;
+- `java.lang.RuntimeException`: o compilador **não** obriga a tratar ou propagar.
+
+Quando lançada, uma exceção é propagada na **pilha de chamadas de métodos em execução**, até que ela seja capturada/tratada ou o programa seja encerrado.
+
+A exception `IndexOutOfBoundsException` é quando se tenta acessar uma posição que **não existe**, ou seja, ultrapassa o `length`. Já a exception `NullPointerException` é quando se é tentado acessar uma variável que recebe `Null`.
+
+#### Por que exceções?
+
+Trata-se de uma boa prática, pois permite que os erros sejam tratados de forma consistente e flexível.
+
+- **Vantagens:**
+  - delega a lógica do erro para a classe responsável por conhecer as regras;
+  - Trata de forma organizada exceções de tipos diferentes;
+  - A exceção pode carregar dados quaisquer (???)
+
+### Estrutura try-catch
+
+**Bloco `try`**:  contém o código que representa a **execução normal do trecho** que **pode** acarretar em uma exceção.
+
+**Bloco `catch`**: possui o código a ser executado caso a **exceção ocorra**.
+
+**Sintaxe**
+
+```java
+try {
+    ...
+}
+catch (Exception e) {
+    ...
+}
+catch (Exception e) {
+    ...
+}
+```
+
+**Código da aula:**
+
+```java
+package secao15.application;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class ExceptionDemo {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            String[] vect = sc.nextLine().split(" ");
+            int posicao = sc.nextInt();
+            System.out.println(vect[posicao]);
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Posição inválida!");
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Input error!");
+        }
+        sc.close();
+    }
+}
+```
+
+### Pilha de chamadas de métodos - stack trace
+
+Para imprimir o stack trace basta seguir o código a seguir:
+
+```java
+public static void method2() {
+        System.out.println("*** METHOD2 STARTS *** ");
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            String[] vect = sc.nextLine().split(" ");
+            int posicao = sc.nextInt();
+            System.out.println(vect[posicao]);
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Posição inválida!");
+            e.printStackTrace();
+            sc.next();
+        }
+```
+
+O `StackTrace` mostra uma estrutura de onde o erro foi disparado e todas as vezes que ele foi "invocado" por assim dizer. No IntelliJ é possível a sua estrutura mais precisamente. Considere todo o código a seguir:
+
+**StackTrace.java**
+
+```java
+package secao15.application;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class StackTrace {
+    public static void main(String[] args) {
+        //System.out.println("*** METHOD STARTS *** ");
+
+        method1();
+        System.out.println("End of program");
+    }
+
+    public static void method1() {
+        System.out.println("*** METHOD1 STARTS *** ");
+        method2();
+        System.out.println("*** METHOD1 ENDS ***");
+    }
+
+    public static void method2() {
+        System.out.println("*** METHOD2 STARTS *** ");
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            String[] vect = sc.nextLine().split(" ");
+            int posicao = sc.nextInt();
+            System.out.println(vect[posicao]);
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Posição inválida!");
+            e.printStackTrace();
+            sc.next();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Input error!");
+        }
+
+        sc.close();
+
+        System.out.println("*** METHOD2 ENDS ***");
+    }
+}
+
+```
+
+![](C:\Users\beatr\Pictures\stacktrace.PNG)
+
+### Bloco `finally`
+
+É um bloco que contém código a ser executado independentemente de ter corrido ou não uma exceção. Exemplo clássico: fechar um arquivo, conexão de banco de dados ou outro recurso específico **ao final do processamento**.
+
+Sintaxe genérica: 
+
+```java
+try {
+    // ...
+}
+catch (ExceptionType e) {
+    // ...
+}
+finally {
+    // ...
+}
+```
+
+> **Extra:** Código base para percorrer as linhas entre um arquivo.
+>
+> ```java
+> File file = new File("C:\\temp\\arq_exemplo.txt");
+> sc = new Scanner(file);
+> 
+> while (sc.hasNextLine()) {
+>     System.out.println(sc.nextLine());
+> }
+> ```
+
+
+
+### Criando exceções personalizadas
+
+**Sugestão de pacotes "model"**:
+
+- model
+  - entities
+  - enums
+  - exception
+  - exception
+
+**Questão problema**:
+
+> Fazer um programa para ler os dados de uma reserva de hotel (número do quarto, data
+> de entrada e data de saída) e mostrar os dados da reserva, inclusive sua duração em
+> dias. Em seguida, ler novas datas de entrada e saída, atualizar a reserva, e mostrar
+> novamente a reserva com os dados atualizados. O programa não deve aceitar dados
+> inválidos para a reserva, conforme as seguintes regras:
+> \- Alterações de reserva só podem ocorrer para datas futuras
+> \- A data de saída deve ser maior que a data de entrada
+
+![](C:\Users\beatr\Pictures\reservation-UML.png)
+
+---
+
+### Aula 44. Estruturas repetitivas "Enquanto" (`while`)
+
+Estrutura de controle que **repete** um bloco de comandos **enquanto** a **condição** é **verdadeira**. **Dica de uso:** quando **não** se sabe previamente a quantidade de repetições que serão realizadas.
+
+**Sintaxe**
+
+```java
+while (condicao) {
+    comando 1;
+    comando 2;
+}
+```
+
+
+
+**Problema exemplo:**
+
+> Fazer um programa que leia números inteiros até que um **zero** seja lido. Ao final mostra a soma dos números lidos.
+
+**Minha solução:**
+
+```java
+package secao6;
+
+import java.util.Scanner;
+
+public class aula44 {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("Digite o número com que deseja iniciar: ");
+        int num_escolhido = sc.nextInt();
+        int soma=0;
+
+        while (num_escolhido != 0) {
+            soma += num_escolhido;
+            System.out.println("Digite um número: ");
+            num_escolhido = sc.nextInt();
+        }
+
+        System.out.println("Soma dos números anteriores ao zero: " + soma);
+
+    }
+}
+```
+
+### Aula 60. Funções (sintaxe)
+
+Principais vantagens: modularização, delegação e reaproveitamento.
+
+Em orientação a objetos, as funções em classes recebem o nome de **métodos**.
+
+Quando estamos na função **Main** e queremos criar uma função, deixamos abaixo da estrutura do `public static void main(...)` e acima do `}` do `public class`. Vejamos o exemplo abaixo:
+
+```java
+package secao7;
+
+import java.util.Scanner;
+
+public class funcoes {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("entre com tres numeros: ");
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        int c = sc.nextInt();
+
+        int higher = max(a, b, c);
+
+//        if (a > b && a > c) {
+//            System.out.println("maior número = " + a);
+//        } else if (b > c) {
+//            System.out.println("maior número = " + b);
+//        } else {
+//            System.out.println("maior número = " + c);
+//        }
+        sc.close();
+    }
+
+    // Função que retorna o maior de três números
+    public static int max(int a, int b, int c) {
+        int maior=0;
+
+        if (a > b && a > c) {
+            maior=a;
+        } else if (b > c) {
+            maior = b;
+        } else {
+            maior = c;
+        }
+        
+        return maior;
+    }
+}
+```
+
+Deixamos `public static int max(...)`, pois é uma função que existirá independente da criação de um objeto.
+
+### Aula 214. Lendo arquivo texto com classe `File` e `Scanner`
+
+**File** - representação abstrata de um arquivo e o seu caminho;
+
+**Scanner** - leitor de texto;
+
+**IOException (Exception)** - exceção padrão, entrada e saída, quando se trabalha com **arquivos**. *Obs.: herda de `Exception`, isto quer dizer que precisa ser tratada*.
+
+### Aula 215. `FileReader` e `BufferedReader`
+
+**FileReader** - stream de leitura de caracteres a partir de arquivos
+
+**BufferedReader (mais rápido)** - é instanciado a partir do **FileReader** e implementa algumas otimizações utilizando buffered memória, tornando-se mais rápido que o FileReader.
+
+### Aula 216. Bloco `try-with-resources`
+
+É um bloco `try` que declara um ou mais recursos, além de **garantir** que esses recursos serão **fechados** ao final do bloco. Disponível a partir do Java 7.
+
+Nessa aula foi usado como base o mesmo código da aula 215.
+
+**Aula215.java**
+
+```java
+package secao17.application;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class Aula215 {
+    public static void main(String[] args) throws IOException {
+
+        String path = "files\\in.txt";
+        FileReader fr = null;
+        BufferedReader br = null;
+
+        try {
+            fr = new FileReader(path);
+            br = new BufferedReader(fr);        // instanciado a partir do FileReader, uma camada de abstracao acima
+
+            String line = br.readLine();
+
+            while (line != null) {
+                System.out.println(line);
+                line = br.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+                if (fr != null) {
+                    fr.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+
+
+**Aula216.java**
+
+```java
+package secao17.application;
+
+import java.io.*;
+
+public class Aula216 {
+    public static void main(String[] args) throws IOException {
+
+        String path = "files\\in.txt";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line = br.readLine();
+
+            while (line != null) {
+                System.out.println(line);
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+```
+
+No escopo do `try` já é instanciado as `streams` de `BufferedReader` e `FileReader`.
+
+### Aula 217. `FileWriter` e `BufferedWriter`
+
+**FileWriter** é uma **stream** de escrita de caracteres de arquivos.
+
+- **Cria/recria** o arquivo: `new FileWriter(path);`
+- **Acrescenta ao arquivo existente:** `new FileWriter(path, true);`
+
+**BufferedWriter** é o mesmo conceito, porém **mais rápido**.
+
+**Aula217.java**
+
+```java
+package secao17.application;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.Buffer;
+
+public class Aula217 {
+    public static void main(String[] args) {
+
+        String[] lines = new String[] {
+                "Good morning",
+                "Good afternoon",
+                "Good night"};
+
+        String path = "files\\out.txt";
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
+            for (String line : lines) {
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+```
+
+Se adicionarmos o argumento `true` no bloco `try`, ele não irá recriar o arquivo, apenas adicionar na última linha.
+
+### Aula 218. Manipulando pastas com `File`
+
+**secao17.application.Aula218.java**
+
+```java
+import java.io.File;
+import java.util.Scanner;
+
+public class secao17.application.Aula218 {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Entre com um caminho de diretório: ");
+        String strPath = sc.nextLine();
+
+        File path = new File(strPath);
+
+        // Coletando todas as pastas contidas no caminho informado pelo usuario
+        File[] folders = path.listFiles(File::isDirectory);
+        System.out.println("FOLDERS:");
+        for (File folder : folders) {
+            System.out.println(folder);
+        }
+
+        // Listagem de ARQUIVOS
+        File[] files = path.listFiles(File::isFile);
+        System.out.println("FILES:");
+        for (File file : files) {
+            System.out.println(file);
+        }
+
+        // Criando SUBPASTAS
+        boolean success = new File(strPath + "\\subdir").mkdir();
+        System.out.println("Diretório criado com sucesso? " + success);
+
+        sc.close();
+    }
+}
+```
+
+# Seção 18: Interfaces
+
+### Aula 224. Interfaces
+
+A partir do Java 8, interfaces podem ter "default methods".
+
+**Definição clássica de interfaces**
+
+Interface é um **tipo** que **define** um conjunto de operações que uma classe deve implementar. Ela estabelece um **contrato** que as classes que implementarão a interface devem cumprir. O objetivo de utilizar interfaces é **criar sistemas com _baixo acoplamento_ e _flexíveis_**.
+
+**Exemplo:**
+
+```java
+public interface Shape {
+    double area();
+    double perimeter();
+}
+```
+
+**Problema exemplo**
+
+> Uma locadora brasileira de carros cobra um valor por hora para locações de até 12 horas. Porém, se a duração da locação ultrapassar 12 horas, a locação será cobrada com base em um valor diário. Além do valor da locação, é acrescido no preço o valor do imposto conforme regras do país que, no caso do Brasil, é 20% para valores até 100.00, ou 15% para valores acima de 100.00. Fazer um programa que lê os dados da locação (modelo do carro, instante inicial e final da locação), bem como o valor por hora e o valor diário de locação. O programa deve então gerar a nota de pagamento (contendo valor da locação, valor do imposto e valor total do pagamento) e informar os dados na tela. Veja os exemplos.
+
+![](C:\Users\beatr\Pictures\Screenpresso\exemplo1-interfaces.png)
+
+**Projeto:** https://github.com/biangomes/rent-a-car
+
+### Aula 228. Inversão de controle e injeção de dependência
+
+Quando associamos uma classe diretamente a outra criamos um **acoplamento forte**. Se a classe concreta mudar, é preciso mudar a classe que se associou a primeira. Seriam **dois pontos de alteração.**
+
+Quando criamos uma interface, a classe que se associou a primeira passa a **implementar** a interface. E a associação, no entanto, se torna entre a interface e a classe primeira criando um **acoplamento fraco**.
+
+No projeto anterior, tínhamos, dentre outros, dois services: `RentalService` e `BrazilTaxService`. Este era o escopo das respectivas entidades:
+
+```java
+package model.services;
+
+import model.entities.CarRental;
+import model.entities.Invoice;
+
+import java.time.Duration;
+
+public class RentalService {
+    private Double pricePerHour;
+    private Double pricePerDay;
+    private BrazilTaxService brazilTaxService;
+
+    public RentalService(double pricePerHour, double pricePerDay, BrazilTaxService brazilTaxService) {
+        this.pricePerHour = pricePerHour;
+        this.pricePerDay = pricePerDay;
+        this.brazilTaxService = brazilTaxService;
+    }
+
+    public void processInvoice(CarRental carRental) {
+
+        double minutes = Duration.between(carRental.getStart(), carRental.getFinish()).toMinutes();
+        double hours = minutes / 60.0;
+
+        double basicPayment;
+
+        if (hours <= 12.0) {
+            basicPayment = pricePerHour * Math.ceil(hours);     // Math.ceil => round number up
+        } else {
+            basicPayment = pricePerDay * Math.ceil(hours/24);
+        }
+
+        double tax = brazilTaxService.tax(basicPayment);
+
+        carRental.setInvoice(new Invoice(basicPayment, tax));
+    }
+}
+```
+
+```java
+package model.services;
+
+public class BrazilTaxService {
+
+    public double tax(double amount) {
+        if (amount <= 100.0) {
+            return amount * 0.2;
+        } else {
+            return amount * 0.15;
+        }
+    }
+}
+```
+
+Por fim, o programa principal, `Program`:
+
+```java
+package application;
+
+import model.entities.CarRental;
+import model.entities.Vehicle;
+import model.services.BrazilTaxService;
+import model.services.RentalService;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Program {
+    public static void main(String[] args) {
+
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
+
+        // Set a datetime pattern
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        System.out.println("Enter with rent data");
+        System.out.print("Car model: ");
+        String carModel = sc.nextLine();
+        System.out.print("Withdraw (dd/MM/yyyy hh:mm): ");
+        LocalDateTime start = LocalDateTime.parse(sc.nextLine(), dtf);
+        System.out.print("Devolution (dd/MM/yyyy hh:mm): ");
+        LocalDateTime end = LocalDateTime.parse(sc.nextLine(), dtf);
+
+
+        CarRental carRental1 = new CarRental(start, end, new Vehicle(carModel));
+
+        System.out.print("Price per hour: ");
+        double pricePerHour = sc.nextDouble();
+        System.out.print("Price per day: ");
+        double pricePerDay = sc.nextDouble();
+
+        RentalService rentalService = new RentalService(pricePerHour, pricePerDay, new BrazilTaxService());
+        rentalService.processInvoice(carRental1);
+        System.out.println("DEBT");
+        System.out.println("Basic payment: " + String.format("%.2f", carRental1.getInvoice().getBasicPayment()));
+        System.out.println("Tax: " + String.format("%.2f", carRental1.getInvoice().getTax()));
+        System.out.println("Total payment: " + String.format("%.2f", carRental1.getInvoice().getTotalPayment()));
+
+        sc.close();
+    }
+}
+```
+
+
+
+No escopo de negócio, quando calculamos o gasto total de se alugar um carro devemos considerar as taxas de juros brasileiras. O problema é que se trocarmos essa taxa de juros, por exemplo taxa de juros dos EUA, teríamos que modificar tanto no programa principal, quanto no `RentalService` e criar um novo `Service` correspondente a nova taxa de juros.
+
+Refatorando a aplicação, foi criada uma `interface` no mesmo domínio dos `services` acima chamada `TaxService`, em que vai generalizar o cálculo de uma taxa de juros. O `BrazilTaxService` permanece, porém ele implementará os métodos da interface. Veja como ficou a seguir: `RentalService`, `TaxService`, `BrazilTaxService` e o `Program`, respectivamente.
+
+```java
+package model.services;
+
+import model.entities.CarRental;
+import model.entities.Invoice;
+
+import java.time.Duration;
+
+public class RentalService {
+    private Double pricePerHour;
+    private Double pricePerDay;
+    private TaxService taxService;
+
+    
+    // o terceiro argumento pode receber BrazilTaxService, EuaTaxService, 	MexicoTaxService, etc...
+    public RentalService(double pricePerHour, double pricePerDay, TaxService taxService) {
+        this.pricePerHour = pricePerHour;
+        this.pricePerDay = pricePerDay;
+        this.taxService = taxService;
+    }
+
+    public void processInvoice(CarRental carRental) {
+
+        double minutes = Duration.between(carRental.getStart(), carRental.getFinish()).toMinutes();
+        double hours = minutes / 60.0;
+
+        double basicPayment;
+
+        if (hours <= 12.0) {
+            basicPayment = pricePerHour * Math.ceil(hours);     // Math.ceil => round number up
+        } else {
+            basicPayment = pricePerDay * Math.ceil(hours/24);
+        }
+
+        double tax = taxService.tax(basicPayment);
+
+        carRental.setInvoice(new Invoice(basicPayment, tax));
+    }
+}
+```
+
+```java
+package model.services;
+
+public interface TaxService {
+    double tax(double amount);
+}
+```
+
+```java
+package model.services;
+
+public class BrazilTaxService implements TaxService {
+
+    public double tax(double amount) {
+        if (amount <= 100.0) {
+            return amount * 0.2;
+        } else {
+            return amount * 0.15;
+        }
+    }
+}
+```
+
+```java
+package application;
+
+import model.entities.CarRental;
+import model.entities.Vehicle;
+import model.services.BrazilTaxService;
+import model.services.RentalService;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Program {
+    public static void main(String[] args) {
+
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
+
+        // Set a datetime pattern
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        System.out.println("Enter with rent data");
+        System.out.print("Car model: ");
+        String carModel = sc.nextLine();
+        System.out.print("Withdraw (dd/MM/yyyy hh:mm): ");
+        LocalDateTime start = LocalDateTime.parse(sc.nextLine(), dtf);
+        System.out.print("Devolution (dd/MM/yyyy hh:mm): ");
+        LocalDateTime end = LocalDateTime.parse(sc.nextLine(), dtf);
+
+
+        CarRental carRental1 = new CarRental(start, end, new Vehicle(carModel));
+
+        System.out.print("Price per hour: ");
+        double pricePerHour = sc.nextDouble();
+        System.out.print("Price per day: ");
+        double pricePerDay = sc.nextDouble();
+
+        RentalService rentalService = new RentalService(pricePerHour, pricePerDay, new BrazilTaxService());
+        rentalService.processInvoice(carRental1);
+        System.out.println("DEBT");
+        System.out.println("Basic payment: " + String.format("%.2f", carRental1.getInvoice().getBasicPayment()));
+        System.out.println("Tax: " + String.format("%.2f", carRental1.getInvoice().getTax()));
+        System.out.println("Total payment: " + String.format("%.2f", carRental1.getInvoice().getTotalPayment()));
+
+        sc.close();
+    }
+}
+```
+
+A interface ficou simples, pois a única responsabilidade dela é **abstrair** o método de cálculo de taxa, haja visto que se precisassemos cuidar de `EuaTaxaService`, por exemplo, ele teria o próprio método de taxa, isto é, com os seus próprios valores e "condicionais".
+
+A metodologia acima é **inversão de controle por meio de construtor**. 
+
+A **inversão de controle** é um padrão de desenvolvimento que consiste em retirar da classe a responsabilidade de instanciar as suas dependências.
+
+A **injeção de dependência**, por sua vez, é uma forma de realizar a inversão de controle: componente **externo** (`TaxService`) instancia a dependência, que é então injetada no objeto "pai". Pode ser implementada de várias formas:
+
+- construtor;
+- classe de instanciação (builder/factory)/
+- container/framework
+
+### Aula 223. Herdar vs Cumprir contrato
+
+**Aspectos em comum entre herança e interfaces:**
+
+- Relação é-um;
+- Generalização/especialização
+- Polimorfismo
+
+A semelhança no polimorfismo entre as duas se dá porque, **em tempo de execução**, ambas podem se associar com um objeto **concreto**. 
+
+**Diferença fundamental:**
+
+- Herança: reuso;
+- Interface: contrato a ser cumprido.
+
+Quando criamos uma classe que implementa uma interface, os métodos definidos na interface **não são reutilizados** e sim **implementados**.
+
+O conceito clássico de uma interface é a definição de um contrato.
+
+**Questionamento:**
+
+> E se eu precisar implementar `Shape` como uma interfae, porém também quiser definir uma estrutura comum reutilizável para todas as figuras?
+
+Quando criamos a interface já presumimos que o método é **público** e **abstrato**.
+
+
+Supondo que tenhamos uma interface chamada `Shape`:
+
+```java
+package secao18.entities;
+
+public interface Shape {
+
+    // todo objeto que implementar Shape, deve implementar o metodo abaixo
+    double area();
+}
+```
+
+e agora queremos criar uma implementação de `Shape`, mas que tenha estruturas reutilizáveis (conforme questionado).
+
+Para isso criaremos uma classe chamada `AbstractShape`:
+
+```java
+package secao18.entities;
+
+public class AbstractShape implements Shape {
+    
+    private Color color;
+
+    public AbstractShape(Color color) {
+        this.color = color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return this.color;
+    }
+
+    
+}
+```
+
+O compilador irá reclamar, pois, como dito anteriormente, uma interface estabelece **contratos** que devem ser cumpridos por **todas** as classes que a **implementarem** e, nesse caso, a classe `AbstractShape` não implementa o método `area()`. Quem irá implementar são as **classes filhas** AbstractShape. Para resolver o problema apontado pelo compilador, diremos que se trata de uma classe **abstrata**.
+
+```java
+public abstract class AbstractShape implements Shape {
+    // ...
+}
+```
+
+### Aula 233. Herança múltipla e o problema do diamante
+
+Quando no diagrama o nome do método está em itálico, quer dizer que é um método **abstrato**. 
+
+**Problema do diamante:** existência do mesmo método em mais de uma superclasse (gera uma ambiguidade). É gerado por **herança múltipla**, que no Java não é permitido.
+
+Criamos uma classe chamada `Device`, `Printer`, `Scanner` e `ComboDevice`, em que a modelagem é `Device` como uma super classe, `Printer` e `Scanner` extendem-na e `ComboDevice` extende de `Printer` e `Scanner`. 
+
+É apresentada a mensagem no IntelliJ após fazer o último passo:
+> Class cannot extend multiple classes
+
+Apesar de uma classe não poder estender mais de uma classe, ela pode **implementar** mais de uma **interface**, pois não há reuso na relação entre a classe "filha" e as interfaces. Não é herança e sim cumprimento de contrato.
+
+### Aula 234. Interface Comparable
+
+Implementação básica:
+
+```java
+public interface Comparable<T> {
+	int compareTo(T o);
+}	
+```
+
+
+**Problema motivador**
+> Faça um programa para ler um arquivo contendo nomes de pessoas (um nome por linha), armazenando-os em uma lista. Depois, ordenar os dados dessa lista e mostrá-los ordenadamente na tela. *Nota*: o caminho do arquivo pode ser informado "hardcode".
+
+
+Forma de ordenar uma coleção: `Collections.sort()`.
+
+**Método `compareTo()`**: o método `compareTo()` serve para comparar dois objetos com base em um critério estabelecido. Existe uma interface chamada `Comparable` e ela deve ser implementada, bem como o método `compareTO()` deve ser sobrescrito com o seu critério de comparação. Na aula do curso do Nélio Alves, ficou da seguinte forma:
+
+```java
+package secao18.entities;
+
+// implementing Comparable interface
+public class Employee implements Comparable<Employee>{
+    private String name;
+    private Double salary;
+
+    public Employee(String name, Double salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    // Metodo necessario para utilizar o metodo sort() de Collections
+    @Override
+    public int compareTo(Employee e) {
+        return name.compareTo(e.getName());
+    }
+}
+
+```
+
+Na documentação a interface `Comparable` recebe um objeto genérico do tipo `T`: 
+```java
+package java.lang;
+
+public interface Comparable<T> {
+    int compareTo(T var1);
+}
+```
+
+No nosso caso colocamos ao invés de `T` o objeto que queríamos comparar.
+
+
+### Aula 235. Default methods
+
+As interfaces podem conter métodos concretos (+Java 8). Os métodos padrão é prover implementação padrão para métodos, de modo a evitar repetição de implementação em toda classe que implemente a interface; assim como a necessidade de se criar classes abstratas para prover reuso da implementação.
+
+**Problema exemplo:**
+> Fazer um programa para ler uma quantia e a duração em meses de um empréstimo. Informar o valor a ser pago depois de decorrido o prazo do empréstimo, conforme regras de juros do Brasil. A regra de cálculo de juros do Brasil é juro composto padrão de 2% ao mês.
+
+A modelagem matemática deste problema é:
+q * 1.02^{n} 
+
+em que:
+
+ q : saldo;
+
+1.02 : o saldo acrescido de 2%;
+
+n : prazo de pagamento, quantidade de vezes.
+
+Para ilustrar essa aula, criamos uma classe chamada `BrazilInterestService` no package `services` em que ela é definida desta maneira:
+
+```java
+package secao18.services;
+
+import java.security.InvalidParameterException;
+
+public class BrazilInterestService {
+    private double interestRate;
+
+    public BrazilInterestService(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public double payment(double amount, int months) {
+        if (months < 1) {
+            throw new InvalidParameterException("Months must be greater than zero");
+        }
+        return amount * Math.pow(1.0+interestRate/100.00, months);
+    }
+}
+```
+
+Ou seja, ela tem como atributo um double chamado `interestRate` que define a **taxa de juros**. Como especificado pelo problema,
+o nosso `interestRate` é de 2%.
+
+Para testar, dentro do package `application` existe a classe `Aula234`:
+
+```java
+package secao18.application;
+
+import secao18.services.BrazilInterestService;
+
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Aula235 {
+    public static void main(String[] args) {
+
+      Locale.setDefault(Locale.US);
+      Scanner sc = new Scanner(System.in);
+
+      BrazilInterestService bis = new BrazilInterestService(2.0);
+      System.out.print("Amount: ");
+      double amount = sc.nextDouble();
+      System.out.print("How many months: ");
+      int months = sc.nextInt();
+
+      System.out.printf("Brazil Payment: R$ %.2f", bis.payment(amount, months));
+
+      sc.close();
+    }
+}
+```
+
+Depois criamos a classe `UsaInterestService` com o mesmo escopo de `BrazilInterestService`, porém considerando o `interestRate`
+de 1%. E aí a classe principal, `Aula234`, ficou desta maneira:
+
+```java
+package secao18.application;
+
+import secao18.services.BrazilInterestService;
+import secao18.services.UsaInterestService;
+
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Aula235 {
+    public static void main(String[] args) {
+
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
+
+        BrazilInterestService bis = new BrazilInterestService(2.0);
+        System.out.print("Amount: ");
+        double amount = sc.nextDouble();
+        System.out.print("How many months: ");
+        int months = sc.nextInt();
+
+        System.out.printf("Brazil Payment: R$ %.2f", bis.payment(amount, months));
+
+        UsaInterestService uis = new UsaInterestService(1.0);
+        System.out.printf("%nUSA Payment: $ %.2f", uis.payment(amount, months));
+
+
+        sc.close();
+    }
+}
+```
+
+Vamos refatorar o nosso código criando uma interface chamada `InterestService` que implementará dois métodos:
+`getInterestRate()` (lembre-se que é a taxa de juros) e o método `payment()` que é quem de fato calculará o pagamento.
+
+Agora nas classes criadas anteriormente, vamos simplesmente acrescentar um `... implements InterestService` e colocar uma *annotation*
+`@Override` acima dos métodos `getInterestRate()` e `payment()` das respectivas classes. Já no programa principal, deixaremos
+as instâncias `bis` e `uis` como do tipo `InterestService`, porém instanciando `BrazilInterestService` e `UsaInterestService` respectivamente.
+
+O objetivo desta aula é chegar até a seguinte refatoração:
+
+Classe `InterestService`:
+```java
+package secao18.services;
+
+import java.security.InvalidParameterException;
+
+public interface InterestService {
+
+    double getInterestRate();
+
+    default double payment(double amount, int months) {
+        if (months < 1) {
+            throw new InvalidParameterException("Months must be greater than zero");
+        }
+
+        return amount * Math.pow(1+getInterestRate()/100.00, months);
+    }
+}
+```
+
+Classe `BrazilInterestService`:
+```java
+package secao18.services;
+
+import java.security.InvalidParameterException;
+
+public class BrazilInterestService implements InterestService {
+    private double interestRate;
+
+    public BrazilInterestService(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    @Override
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+}
+```
+
+Classe `UsaInterestService`:
+
+```java
+package secao18.services;
+
+import java.security.InvalidParameterException;
+
+public class UsaInterestService implements InterestService{
+
+    private double interestRate;
+
+    public UsaInterestService(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    @Override
+    public double getInterestRate() {
+        return this.interestRate;
+    }
+
+}
+```
+
+Veja que deixamos o método `payment()` como default na interface. Apenas deixamos o método `getInterestRate()` em cada uma das classes,
+pois ele terá valores distintos para cada implementação.
+
+Esta é uma forma de se ter **herança múltipla** no Java e as interfaces provém **reuso**.
+
+> Interfaces são bem diferentes das classes **abstratas**. As interfaces não possuem recursos como construtores e atributos.
+
+
+# Seção 19: Generics, Set e Map
+
+### Aula 238. Introdução aos `Generics`
+
+`Generics` permitem que **classes**, **interfaces** e **métodos** possam ser parametrizados por tipo. Os seus benefícios são:
+- Reuso;
+- Type Safety;
+- Performance.
+
+É muito usado em `Collections`.
+
+```java
+List<String> list = new ArrayList<>();
+list.add("Maria");
+String name = list.get(0);
+```
+
+**Problema motivador:**
+> Deseja-se fazer um programa que leia uma quantidade N, e depois N números inteiros. 
+> Ao final, imprima esses números de forma organizada conforme exemplo. 
+> Em seguida, informar qual foi o primeiro valor informado.
+
+Vamos criar um serviço de impressão chamado `PrintService`.
+
+No package `secao19.service` foi criado a classe `PrintService` desta forma:
+
+```java
+package secao19.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PrintService {
+    private List<Integer> lista = new ArrayList<>();
+
+    public void addValue(Integer value) {
+        lista.add(value);
+    }
+
+    public Integer first() {
+        if (lista.isEmpty()) {
+            throw new IllegalStateException("List is empty");
+        }
+        return lista.get(0);
+    }
+
+    public void print() {
+        System.out.print("[");
+
+        if (!lista.isEmpty()) {
+            System.out.print(lista.get(0));
+        }
+        for (int i=1; i<lista.size(); i++) {
+            System.out.println(", " + lista.get(i));
+        }
+
+    }
+}
+```
+
+e no package `secao19.application` criamos a classe `Aula238` instanciando o `PrintService`.
+
+Porém da forma acima, se tentarmos colocar um dado na lista do tipo `String` ele dará erro.
+
+Uma eventual solução para isso é mudar o tipo de `List<>` para o tipo `Object`. No Java, **tudo é `Object`**.
+
+O problema de deixar como `Object` é que qualquer valor passado ele irá aceitar. Suponhamos que, no fim das contas, 
+queiramos que o nosso array seja apenas de inteiros. Se por alguma razão, adicionar antes uma string ele deixará passar.
+
+O problema acima pode ser solucionado com generics.
+
+A classe `PrintService` utilizando generics fica da seguinte forma:
+
+```java
+package secao19.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PrintService<T> {
+    // List<T> agora é uma lista de tipo genérico
+    private List<T> lista = new ArrayList<>();
+
+    public void addValue(T value) {
+        lista.add(value);
+    }
+
+    public T first() {
+        if (lista.isEmpty()) {
+            throw new IllegalStateException("List is empty");
+        }
+        return lista.get(0);
+    }
+
+    public void print() {
+        System.out.print("[");
+
+        if (!lista.isEmpty()) {
+            System.out.print(lista.get(0));
+        }
+        for (int i=1; i<lista.size(); i++) {
+            System.out.print(", " + lista.get(i));
+        }
+        System.out.print("]\n");
+
+    }
+}
+```
+
+### Aula 239: Generics delimitados
+
+**Problema motivador:**
+> Uma empresa de consultoria deseja avaliar a performance de produtos, funcionários, dentre outras coisas. Um dos cálculos que ela precisa é encontrar 
+> o maior dentre um conjunto de elementos. Fazer um programa que leia um 
+> conjunto de produtos a partir de um arquivo, conforme exemplo, e depois mostre o mais caro deles.
+
+Quando se trata de um método estático, não é necessário instanciar a classe.
+
+Lógica para implementar a busca do maior número inteiro dentro de um array:
+
+```java
+package secao19.service;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class CalculationService {
+
+    public static Integer max(List<Integer> list) {
+
+        // Logica defensiva
+        if (list.isEmpty()) {
+            throw new IllegalStateException("List can't be empty");
+        }
+
+        Integer max = list.get(0);
+        for (Integer item : list) {
+            if (item.compareTo(max) > 0) {
+                max = item;
+            }
+        }
+
+        return max;
+    }
+}
+```
+
+O problema motivador indica que queremos encontrar o maior em uma lista de **produtos**.
+
+Para ler e armazenar em uma lista os dados de uma entidade, que está no formato CSV, podemos fazer:
+
+```java
+String[] fields = line.split(",");
+productList.add(new Product(fields[0], Double.parseDouble(fields[1])));
+```
+
+
+
+### Seções extras
+
+#### DevDojo - Aula 98: IO pt 01 Classe File para arquivos
+

@@ -1,15 +1,9 @@
-package secao14.exercicios.entities;
+package secao18.entities;
 
-import secao14.exercicios.entities.enums.Color;
-
-public class Rectangule extends Shape {
+public class Rectangule extends AbstractShape {
 
     private Double width;
     private Double height;
-
-    public Rectangule() {
-        super();
-    }
 
     public Rectangule(Color color, Double width, Double height) {
         super(color);
@@ -34,15 +28,12 @@ public class Rectangule extends Shape {
     }
 
     @Override
-    public Double area() {
-        return width * height;
+    public double area() {
+        return this.height * Math.pow(this.width, 2);
     }
 
     @Override
     public String toString() {
-        return "Width: " + String.format("%.2f", width)
-                + " Height: " + String.format("%.2f", height)
-                + " Area = " + width + " x " + height
-                + " = " + String.format("%.2f", area());
+        return "Área do retângulo: " + String.format("%.2f", area());
     }
 }
