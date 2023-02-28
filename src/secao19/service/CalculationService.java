@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CalculationService {
 
-    public <T extends Comparable<T>> T max(List<T> list) {
+    public static <T extends Comparable<T>> T max(List<T> list) {
 
         // Logica defensiva
         if (list.isEmpty()) {

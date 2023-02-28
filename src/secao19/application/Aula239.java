@@ -22,6 +22,8 @@ public class Aula239 {
             while (line != null) {
                 /* Adiciona em list
                 list.add(Integer.parseInt(line)); */
+
+                // vetor de string, baseado no caracter "vírgula". recorta as "colunas"
                 String[] fields = line.split(",");
                 productList.add(new Product(fields[0], Double.parseDouble(fields[1])));
                 line = br.readLine();
@@ -29,7 +31,7 @@ public class Aula239 {
 
             //Integer x = CalculationService.max(list);
             Product p = CalculationService.max(productList);
-            System.out.printf("Max: %d", x);
+            System.out.printf("Max: " + p);
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
