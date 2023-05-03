@@ -31,7 +31,7 @@ public class Aula239 {
 
             //Integer x = CalculationService.max(list);
             Product p = CalculationService.max(productList);
-            System.out.printf("Max: " + p);
+            System.out.printf("Most expensive: " + p);
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }

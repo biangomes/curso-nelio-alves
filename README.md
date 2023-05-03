@@ -3254,7 +3254,170 @@ String[] fields = line.split(",");
 productList.add(new Product(fields[0], Double.parseDouble(fields[1])));
 ```
 
+Uma alteração que precisa ser feita, é que a classe `Product` deve ser um subtipo do módulo `Comparable` e também precisa implementar o método `compareTo`.
 
+Desta forma, o código completo da classe `Product` é:
+
+```java
+package secao19.entities;
+
+// Implements Comparable<tipo>
+public class Product implements Comparable<Product> {
+    private String name;
+    private Double price;
+
+    public Product(String name, Double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return name + ", " + String.format("%.2f", price);
+    }
+
+    // método de COMPARABLE
+    @Override
+    public int compareTo(Product product) {
+        return price.compareTo(product.getPrice());
+    }
+}
+
+```
+
+Apesar de o código funcionar da forma que está, a forma mais **correta** é:
+
+```java
+package secao19.service;
+
+import java.util.List;
+
+public class CalculationService {
+
+    public static <T extends Comparable<? super T>> T max(List<T> list) {
+
+        // Logica defensiva
+        if (list.isEmpty()) {
+            throw new IllegalStateException("List can't be empty");
+        }
+
+        T max = list.get(0);
+        for (T item : list) {
+            if (item.compareTo(max) > 0) {
+                max = item;
+            }
+        }
+
+        return max;
+    }
+}
+
+```
+
+>  O método estático `max` é de um tipo genérico T, que implementa o `Comparable` para `T` e toda superclasse `T`.
+
+### Aula 240. Tipos curinga
+
+Generics são **invariantes**.
+
+De acordo com a [documentação oficial](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html), a classe `Object` é a raiz da hierarquia de classes. 
+
+> Todos os objectos, incluindo arrays, implementam os métodos desta classe.
+
+Agora considere `List<Object>`. Trata-se de uma lista do tipo `Object`.
+
+Sabe-se que a classe `Integer` é subtipo da classe `Object`. **Será que `List<Integer>` é um subtipo de `List<Object>`?**
+
+```java
+List<Object> myObj = new ArrayList<Object>();
+
+List<Integer> myInt = new ArrayList<Integer>();
+
+myObj = myInt;      // ERRO DE COMPILAÇÃO
+```
+
+O erro estourado pelo código acima é:
+
+> java: incomparable types: java.util.List<java.lang.Object> and java.util.List<java.lang.Integer>
+
+Para o caso de `List<>`, o supertipo é:
+
+```java
+List<?>
+```
+
+
+Readaptando o código de cima:
+
+```java
+List<?> myObj = new ArrayList<Object>();
+List<Integer> myInt = new ArrayList<Integer>();
+
+myObj = myInt;      // FUNCIONA
+```
+
+O retorno do código acima é:
+
+> []
+
+Com tipos curinga podemos fazer métodos que recebem um genérico de qualquer tipo.
+
+Um exemplo prático é quando criamos uma interface que criará um contrato para as classes que implementarem-no. Exemplo:
+
+```java
+public interface ICrudService<T> {
+    Person findPersonById(Long id);
+    List<Person> findAll();
+}
+```
+
+Outro exemplo:
+
+```java
+package secao19.application;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
+public class Aula240 {
+
+    public static void main(String[] args) {
+
+        List<Integer> myInts = Arrays.asList(2, 4, 6);
+        printList(myInts);
+
+        List<String> myStrs = Arrays.asList("Java", "&", "Spring Boot");
+        printList(myStrs);
+    }
+
+    public static void printList(List<?> list) {
+        for (Object obj : list) {
+            System.out.println(obj);
+        }
+    }
+}
+
+```
+
+Porém, **não é possível adicionar** elementos a uma coleção de tipo curinga.
 
 ### Seções extras
 
