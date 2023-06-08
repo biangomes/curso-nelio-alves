@@ -17,7 +17,7 @@ public class Aula241 {
         System.out.println("Total area: " + totalArea(shapes));
     }
 
-    public static double totalArea(List<Shape> list) {
+    public static double totalArea(List<? extends Shape> list) {
         double sum = 0.0;
 
         for (Shape s : list) {

@@ -3300,7 +3300,9 @@ public static double totalArea(List<?> list) {
 }
 ```
 
-o compilador reclamará que não necessariamente os elementos da lista serão do tipo `Shape`.
+o compilador reclamará que não necessariamente os elementos da lista serão do tipo `Shape`. O erro ao executar o método da forma que está acima é:
+
+> java: incompatible types: capture#1 of ? cannot be converted to secao19.entities.Shape
 
 **O que queremos:** o parâmetro do método deve ser do tipo `Shape` incluindo os subtipos de shape.
 
