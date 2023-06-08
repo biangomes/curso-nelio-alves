@@ -3258,7 +3258,7 @@ productList.add(new Product(fields[0], Double.parseDouble(fields[1])));
 
 ### Aula 241: Curingas delimitados
 
-**Problema:**
+#### PROBLEMA 1:
 
 > Método que retorne a soma das áreas de uma lista de figuras.
 
@@ -3316,7 +3316,9 @@ public static double totalArea(List<? extends Shape> list) {
 
 A lista acima pode ser `Shape` ou **qualquer subtipo de Shape**.
 
+#### PROBLEMA 2 (princípio get/put):
 
+> Vamos fazer um método que **copia** os elementos de uma lista para uma **outra** lista que pode ser **mais genérica** que a primeira.
 
 ### Seções extras
 
