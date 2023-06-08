@@ -3256,6 +3256,66 @@ productList.add(new Product(fields[0], Double.parseDouble(fields[1])));
 
 
 
+### Aula 241: Curingas delimitados
+
+**Problema:**
+
+> Método que retorne a soma das áreas de uma lista de figuras.
+
+**Nota 1:** soluções impróprias
+
+```java
+public double totalArea(List<Shape> list) {}
+
+public double totalArea(List<?> list) {}
+```
+
+O problema proposto pelo professor incluía criar uma lista de `Shapes`, em que cada shape poderia ser um `Circle` ou um `Rectangule`. A lista criada ficou no formato: 
+
+[
+
+​	rectangule(3.0, 2.0),
+
+​	circle(3.0)
+
+]
+
+
+
+Foi criado um método `totalArea` em que recebia como parâmetro uma lista de shapes. Este método é responsável por pegar as áreas de cada figura e somá-las iterando sobre a lista previamente criada e passada como parâmetro.
+
+O problema começa quando se cria uma lista de `Circle` ou de `Rectangule`. Ao chamar o método `totalArea`, que recebe uma **lista de shape**, ele não necessariamente conseguirá implementar para um **subtipo** de shape. Veja:
+
+```java
+public static double totalArea(List<Shape> list) {
+    // ...
+}
+```
+
+Quando criado uma lista de `Circle` o método `totalArea` não funcionará. Para funcionar, precisa colocar um **tipo curinga**. Se substituirmos para:
+
+```java
+public static double totalArea(List<?> list) {
+    // ...
+}
+```
+
+o compilador reclamará que não necessariamente os elementos da lista serão do tipo `Shape`.
+
+**O que queremos:** o parâmetro do método deve ser do tipo `Shape` incluindo os subtipos de shape.
+
+**Como resolvemos:**
+
+```java
+public static double totalArea(List<? extends Shape> list) {
+    // ...
+}
+```
+
+A lista acima pode ser `Shape` ou **qualquer subtipo de Shape**.
+
+
+
 ### Seções extras
 
 #### DevDojo - Aula 98: IO pt 01 Classe File para arquivos
