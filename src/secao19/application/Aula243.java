@@ -16,7 +16,7 @@ public class Aula243 {
         set.add("Playstation 5");
         set.add("Alexa");
 
-        System.out.println(set.contains("iPhone 13"));
+        set.remove("Alexa");
 
         for (String p : set) {
             System.out.println(p);
