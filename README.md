@@ -3644,6 +3644,22 @@ Deste modo, as novas implementações dos métodos supracitados são:
 
 **R.:** o `==` **não** compara o **conteúdo** e sim o **endereço de memória**, a **referência**. O primeiro compara o **conteúdo**.
 
+Para os tipos `String`, o compilador trata diferentemente. Se fizermos:
+
+```java
+String s1 = "teste";
+String s2 = "teste";
+
+boolean ehTrue = s1 == s2;		// true
+```
+
+Para **forçar** a criação de um objeto `String`, deveria ser:
+
+```java
+String s1 = new String("teste");
+String s2 = new String("teste");
+```
+
 
 
 ### Seções extras
