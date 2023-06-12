@@ -3533,7 +3533,7 @@ Nota-se que, no código da variância, existe o `? extends Number` e no da covar
 
 O primeiro diz que é para qualquer Number e todo **subtipo de Number**. O segundo quer dizer que é para qualquer Number e todo **supertipo de Number**.
 
-## Aula 242. HashCode e Equals
+### Aula 242. HashCode e Equals
 
 São operações da classe `Object` utilizadas para comparar se um objeto é **igual** a outro.
 
@@ -3660,7 +3660,29 @@ String s1 = new String("teste");
 String s2 = new String("teste");
 ```
 
+### Aula 243. `Set<T>`
 
+`Set<T>` é um conjunto algébrico de elementos, em que operações como **intersecção**, **união** e **diferença** existem. É importante destacar que esta interface **não admite repetições**, os elementos **não possuem posição** e o **acesso**, **inserção** e **remoção** de elementos são rápidos.
+
+As principais implementações são:
+
+- **HashSet:** operações $O(1)$ em tabela hash e **não ordenado**.
+- **TreeSet:** operações $O(log n)$ em árvore rubro-negra e ordenado pelo `compareTo()` do objeto (ou `Comparator`).
+- **LinkedHashSet:** velocidade intermediária (> TreeSet) e elementos na ordem em que são adicionados.
+
+**_Nota_:** *como o tempo é constante em O(1), este tempo de execução é mais rápido que O(log n), visto que este último varia conforme entram dados. Já o LinkedHashSet consegue ser mais rápido que o TreeSet, pois para inserção, remoção e busca o tempo de execução dele é O(1), apenas na iteração que é O(n) (mais lento que O(log n)).*
+
+#### Alguns métodos importantes
+
+- `add(obj)`, `remove(obj)`, `contains(obj)`
+  - baseado em **equals** e **hashCode**
+  - se equals e hashCode **não** existir, é utilizado **comparação de ponteiros**.
+- `clear()`
+- `size()`
+- `removeIf(predicate)`
+- `addAll(other)` -  **união:**
+- `retainAll(other)`- **intersecção:**
+- `removeAll(other)` - **diferença:**
 
 ### Seções extras
 
