@@ -3479,9 +3479,39 @@ public static double totalArea(List<? extends Shape> list) {
 
 A lista acima pode ser `Shape` ou **qualquer subtipo de Shape**.
 
-#### PROBLEMA 2 (princípio get/put):
+#### PROBLEMA 2 (princípio get/put - covariância):
 
 > Vamos fazer um método que **copia** os elementos de uma lista para uma **outra** lista que pode ser **mais genérica** que a primeira.
+
+Suponha o seguinte código:
+
+```java
+List<Integer> intList = new ArrayList<Integer>();
+intList.add(10);
+intList.add(5);
+
+List<? extends Number> list = intList;		// criou uma cópia de intList com um supertipo
+
+Number x = list.get(0);
+
+list.add(20);		// erro de compilação
+```
+
+Dará erro para adicionar, pois o compilador não tem como saber que o valor que tenta ser adicionado é compatível com algum outro possível tipo `Number` que possa ser a lista.
+
+O erro de compilação é:
+
+> java: incompatible types: int cannot be converted to capture#1 of ? extends java.lang.Number
+
+
+
+**Covariância:**
+
+> Quando a opção `get` é permitida e a `put` **não**.
+
+**Contravariância:**
+
+> Quando a opção `put` é permitida e a `get` **não**.
 
 ### Seções extras
 
