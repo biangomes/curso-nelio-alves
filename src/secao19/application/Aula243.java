@@ -1,5 +1,6 @@
 package secao19.application;
 
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -7,19 +8,22 @@ import java.util.TreeSet;
 public class Aula243 {
     public static void main(String[] args) {
 
-        Set<String> set = new LinkedHashSet<>();
+        Set<Integer> a = new TreeSet<>(Arrays.asList(0, 2, 4, 6, 8, 10));
+        Set<Integer> b = new TreeSet<>(Arrays.asList(1, 3, 5, 7, 9, 10));
 
-        set.add("TV");
-        set.add("Tablet");
-        set.add("iPhone 13");
-        set.add("Xbox Series S|X");
-        set.add("Playstation 5");
-        set.add("Alexa");
+        // União
+        Set<Integer> c = new TreeSet<>(a);      // cria uma cópia do conjunto a
+        c.addAll(b);        // uniao do conjunto c com b
+        System.out.println(c);      // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-        set.removeIf(x -> x.length() < 3);
+        // Intersecção
+        Set<Integer> d = new TreeSet<>(a);
+        d.retainAll(b);     // interseccao do conjunto d com b
+        System.out.println(d);      // [10]
 
-        for (String p : set) {
-            System.out.println(p);
-        }
+        // Diferença
+        Set<Integer> e = new TreeSet<>(a);
+        e.removeAll(b);     // diferença do conjunto e com b
+        System.out.println(e);      // [0, 2, 4, 6, 8]
     }
 }
