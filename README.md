@@ -3503,8 +3503,6 @@ O erro de compilação é:
 
 > java: incompatible types: int cannot be converted to capture#1 of ? extends java.lang.Number
 
-
-
 **Covariância:**
 
 > Quando a opção `get` é permitida e a `put` **não**.
@@ -3512,6 +3510,26 @@ O erro de compilação é:
 **Contravariância:**
 
 > Quando a opção `put` é permitida e a `get` **não**.
+
+O código de exemplo para trazer a covariância:
+
+```java
+        List<Object> myObjs = new ArrayList<Object>();
+        myObjs.add("Bea");
+        myObjs.add("Ana");
+
+        List<? super Number> myNums = myObjs;
+        myNums.add(10);
+        myNums.add(3.14);
+
+        Number x = myNums.get(0);		// erro de compilação
+```
+
+O erro de compilação é:
+
+> java: incompatible types: capture#1 of ? super java.lang.Number cannot be converted to java.lang.Number
+
+
 
 ### Seções extras
 

@@ -17,6 +17,8 @@ public class Aula241 {
         System.out.println("Total area: " + totalArea(shapes));
 
         // Princípio get/put - Covariância
+        System.out.println("====================");
+        System.out.println("Princípio get/put - Variância");
 
         List<Integer> intList = new ArrayList<Integer>();
         intList.add(10);
@@ -28,8 +30,25 @@ public class Aula241 {
         System.out.println("Lista de inteiros: " + intList);
         System.out.println("get: " + x);
 
-        list.add(20);
-        System.out.println("put: " + list);
+//        list.add(20);
+//        System.out.println("put: " + list);
+
+        // Princípio get/put - Contravariância
+        System.out.println("====================");
+        System.out.println("Princípio get/put - Contravariância");
+
+        List<Object> myObjs = new ArrayList<Object>();
+        myObjs.add("Bea");
+        myObjs.add("Ana");
+        System.out.println("Lista de Objects: " + myObjs);
+
+        List<? super Number> myNums = myObjs;
+        myNums.add(10);
+        myNums.add(3.14);
+        System.out.println("Lista de super Number: " + myNums);
+
+        Number y = myNums.get(0);
+        System.out.println("get: " + y);
 
     }
 
