@@ -3529,7 +3529,9 @@ O erro de compilação é:
 
 > java: incompatible types: capture#1 of ? super java.lang.Number cannot be converted to java.lang.Number
 
+Nota-se que, no código da variância, existe o `? extends Number` e no da covariância, `? super Number`. **O que significa?**
 
+O primeiro diz que é para qualquer Number e todo **subtipo de Number**. O segundo quer dizer que é para qualquer Number e todo **supertipo de Number**.
 
 ### Seções extras
 
