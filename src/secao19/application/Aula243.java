@@ -16,7 +16,7 @@ public class Aula243 {
         set.add("Playstation 5");
         set.add("Alexa");
 
-        set.remove("Alexa");
+        set.removeIf(x -> x.length() < 3);
 
         for (String p : set) {
             System.out.println(p);
