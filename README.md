@@ -3566,6 +3566,84 @@ String nomeDaIrma = "Cássia";		// hashcode = 2129485174
 boolean hashCodeEhOMesmo = (nomeDaIrma.hashCode()) == (nomeDoIrmao.hashCode());		// false
 ```
 
+Criamos uma classe `Client`, dentro do package `entities`, em que ficou como:
+
+```java
+package secao19.entities;
+
+public class Client {
+    private String name;
+    private String email;
+
+    public Client(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        return name.equals(client.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+}
+
+```
+
+A implementação do método `equals()` e `hashCode()` acima comparam apenas o atributo **nome**, porém, um nome não é único.
+
+Dado os atributos que temos, `name` e `email`, o mais recomendado é considerar que cada pessoa é formada (dentro do escopo do projeto) por nome **e** e-mail únicos.
+
+Deste modo, as novas implementações dos métodos supracitados são:
+
+```java
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        if (!name.equals(client.name)) return false;
+        return email.equals(client.email);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + email.hashCode();
+        return result;
+    }
+```
+
+***Qual a diferença entre `equals` e `==`***?
+
+**R.:** o `==` **não** compara o **conteúdo** e sim o **endereço de memória**, a **referência**. O primeiro compara o **conteúdo**.
+
 
 
 ### Seções extras

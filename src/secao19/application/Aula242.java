@@ -1,20 +1,16 @@
 package secao19.application;
 
+import secao19.entities.Client;
+
 public class Aula242 {
     public static void main(String[] args) {
 
-        String nomeDaMae = "Rita";
-        String nomeDoPai = "Sérgio";
+        Client c1 = new Client("Maria", "maria@gmail.com");
+        Client c2 = new Client("Maria", "maria@gmail.com");
 
-        boolean ehIgual = nomeDaMae.equals(nomeDoPai);
-        System.out.println(ehIgual);
-
-
-        String nomeDoIrmao = "Tadeu";
-        String nomeDaIrma = "Cássia";
-        System.out.println(nomeDoIrmao.hashCode() + "\n" + nomeDaIrma.hashCode());
-
-        boolean hashCodeEhOMesmo = (nomeDaIrma.hashCode()) == (nomeDoIrmao.hashCode());
-        System.out.println(hashCodeEhOMesmo);
+        System.out.println(c1.hashCode());
+        System.out.println(c2.hashCode());
+        System.out.println(c1.equals(c2));
+        System.out.println(c1 == c2);
     }
 }
