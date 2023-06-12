@@ -3533,6 +3533,41 @@ Nota-se que, no código da variância, existe o `? extends Number` e no da covar
 
 O primeiro diz que é para qualquer Number e todo **subtipo de Number**. O segundo quer dizer que é para qualquer Number e todo **supertipo de Number**.
 
+## Aula 242. HashCode e Equals
+
+São operações da classe `Object` utilizadas para comparar se um objeto é **igual** a outro.
+
+- **Equals:** lento, resposta 100%.
+- **Hashcode:** rápido, porém a resposta positiva não é 100% (falso positivo).
+
+**Regra de ouro do Hashcode:**
+
+> Se o hashCode de dois objetos for diferente, então os dois objetos são diferentes.
+
+Isso **não** quer dizer que: dois objetos só são iguais, se o hashCode deles for o mesmo.
+
+Tipos comuns já possuem a implementação para essas operações como: String, Date, Integer, Double, etc.
+
+Classes personalizadas precisam sobrepô-las.
+
+**Exemplo:**
+
+```java
+String nomeDaMae = "Rita";
+String nomeDoPai = "Sérgio";
+
+boolean ehTrue = nomeDaMae.equals(nomeDoPai);		// false
+```
+
+```java
+String nomeDoIrmao = "Tadeu";		// hashcode = 80564839
+String nomeDaIrma = "Cássia";		// hashcode = 2129485174
+
+boolean hashCodeEhOMesmo = (nomeDaIrma.hashCode()) == (nomeDoIrmao.hashCode());		// false
+```
+
+
+
 ### Seções extras
 
 #### DevDojo - Aula 98: IO pt 01 Classe File para arquivos
