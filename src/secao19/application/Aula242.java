@@ -8,8 +8,8 @@ public class Aula242 {
         Client c1 = new Client("Maria", "maria@gmail.com");
         Client c2 = new Client("Maria", "maria@gmail.com");
 
-        String s1 = "Test";
-        String s2 = "Test";
+        String s1 = new String("Test");
+        String s2 = new String("Test");
 
         System.out.println(c1.hashCode());
         System.out.println(c2.hashCode());
