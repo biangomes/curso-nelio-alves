@@ -3684,6 +3684,19 @@ As principais implementações são:
 - `retainAll(other)`- **intersecção:**
 - `removeAll(other)` - **diferença:**
 
+## Aula 244. Como `Set` testa a igualdade
+
+Se hashCode e equals estiverem implementados:
+
+- primeiro hashCode. Se for igual, usa-se equals para confirmar.
+- Classes como String, Integer, Double já possuem equals e hashCode
+
+Se **não** estiverem implementados:
+
+- compara-se as **refereências** dos objetos.
+
+
+
 ### Seções extras
 
 #### DevDojo - Aula 98: IO pt 01 Classe File para arquivos

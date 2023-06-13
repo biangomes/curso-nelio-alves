@@ -1,5 +1,7 @@
 package secao19.entities;
 
+import java.util.Objects;
+
 public class Product implements Comparable<Product> {
     private String name;
     private Double price;
@@ -33,5 +35,23 @@ public class Product implements Comparable<Product> {
     @Override
     public int compareTo(Product product) {
         return price.compareTo(product.getPrice());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        if (!Objects.equals(name, product.name)) return false;
+        return Objects.equals(price, product.price);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        return result;
     }
 }
