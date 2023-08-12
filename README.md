@@ -3660,7 +3660,7 @@ String s1 = new String("teste");
 String s2 = new String("teste");
 ```
 
-### Aula 243. `Set<T>`
+### Aula 244. `Set<T>`
 
 `Set<T>` é um conjunto algébrico de elementos, em que operações como **intersecção**, **união** e **diferença** existem. É importante destacar que esta interface **não admite repetições**, os elementos **não possuem posição** e o **acesso**, **inserção** e **remoção** de elementos são rápidos.
 
@@ -3671,6 +3671,19 @@ As principais implementações são:
 - **LinkedHashSet:** velocidade intermediária (> TreeSet) e elementos na ordem em que são adicionados.
 
 **_Nota_:** *como o tempo é constante em O(1), este tempo de execução é mais rápido que O(log n), visto que este último varia conforme entram dados. Já o LinkedHashSet consegue ser mais rápido que o TreeSet, pois para inserção, remoção e busca o tempo de execução dele é O(1), apenas na iteração que é O(n) (mais lento que O(log n)).*
+
+## Aula 244. Como `Set` testa a igualdade
+
+Se hashCode e equals estiverem implementados:
+
+- primeiro hashCode. Se for igual, usa-se equals para confirmar.
+- Classes como String, Integer, Double já possuem equals e hashCode
+
+Se **não** estiverem implementados:
+
+- compara-se as **referências** dos objetos.
+
+## Aula 245. Como `TreeSet<T>` compara os elementos
 
 #### Alguns métodos importantes
 
@@ -3684,18 +3697,24 @@ As principais implementações são:
 - `retainAll(other)`- **intersecção:**
 - `removeAll(other)` - **diferença:**
 
-## Aula 244. Como `Set` testa a igualdade
+O método `compareTo()` pode ser implementado da maneira abaixo, dado que se queira comparar os preços dos produtos:
 
-Se hashCode e equals estiverem implementados:
+```java
+    
+	public class ComparacoesEntreProdutos implements Comparable<Produtos> {
 
-- primeiro hashCode. Se for igual, usa-se equals para confirmar.
-- Classes como String, Integer, Double já possuem equals e hashCode
+	@Override
+    public int compareTo(Product otherProduct) {
+        // comparar por preço
+         return price.compareTo(otherProduct.getPrice());
 
-Se **não** estiverem implementados:
+        // comparar por nome
+        // return name.toUpperCase().compareTo(otherProduct.getName().toUpperCase());
+    	}
+    }
+```
 
-- compara-se as **refereências** dos objetos.
-
-
+Os métodos `equals` e `hashCode` não precisam estar implementados para o que foi escrito acima funcionar.
 
 ### Seções extras
 

@@ -28,13 +28,12 @@ public class Product implements Comparable<Product> {
     }
 
     @Override
-    public String toString() {
-        return name + ", " + String.format("%.2f", price);
-    }
+    public int compareTo(Product otherProduct) {
+        // comparar por preço
+         return price.compareTo(otherProduct.getPrice());
 
-    @Override
-    public int compareTo(Product product) {
-        return price.compareTo(product.getPrice());
+        // comparar por nome
+//         return name.toUpperCase().compareTo(otherProduct.getName().toUpperCase());
     }
 
     @Override
@@ -53,5 +52,13 @@ public class Product implements Comparable<Product> {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (price != null ? price.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                '}';
     }
 }
