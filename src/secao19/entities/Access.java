@@ -56,4 +56,9 @@ public class Access {
         result = 31 * result + dtAccess.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return name + " " + dtAccess;
+    }
 }
