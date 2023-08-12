@@ -3716,6 +3716,14 @@ O método `compareTo()` pode ser implementado da maneira abaixo, dado que se que
 
 Os métodos `equals` e `hashCode` não precisam estar implementados para o que foi escrito acima funcionar.
 
+## Aula 246. Exercício resolvido (`Set`)
+
+**Problema exemplo:**
+
+> Um site de internet registra um log de acessos dos usuários. Um registro de log consiste no nome de usuário (apenas uma palavra) e o instante em que o usuário acessou o site no padrão ISO-8601, separados por espaço, conforme exemplo. Fazer um programa que leia o log de acessos a partir de um arquivo e daí informe **quantos** usuários **distintos** acessaram o site.
+
+
+
 ### Seções extras
 
 #### DevDojo - Aula 98: IO pt 01 Classe File para arquivos
