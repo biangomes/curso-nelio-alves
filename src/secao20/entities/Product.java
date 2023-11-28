@@ -2,7 +2,7 @@ package secao20.entities;
 
 import java.util.Objects;
 
-public class Product implements Comparable<Product>{
+public class Product {
   private String name;
   private Double price;
 
@@ -27,11 +27,6 @@ public class Product implements Comparable<Product>{
 
   public void setPrice(Double price) {
     this.price = price;
-  }
-
-  @Override
-  public int compareTo(Product p) {
-    return name.toUpperCase().compareTo(p.getName().toUpperCase());
   }
 
   @Override

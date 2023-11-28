@@ -3732,7 +3732,25 @@ Os métodos `equals` e `hashCode` não precisam estar implementados para o que f
 
 Caso desejamos alterar o **critério de comparação**, devemos ir até a classe `Product` e alterar diretamente no método `compareTo`. Em termos de manutenção, isso é indesejável.
 
-Para contornar a situação citada acima, deixará de ser utilizado o `sort()` de `Collections` e passará a ser usado o de `List`.
+Para contornar a situação citada acima, deixará de ser utilizado o `sort()` de `Collections` e passará a ser usado o de `List`, ficando da seguinte maneira:
+
+```java
+    List<Product> list = new ArrayList<>();
+    list.add(new Product("TV", 900.00));
+    list.add(new Product("Notebook", 1200.00));
+    list.add(new Product("Tablet", 450.00));
+
+    /*
+     * na classe Product implementava a interface Comparable<Product> e 
+     * sobrescrevia o método compareTo
+    // Collections.sort(list);  */
+
+    /*
+      classe Product NAO implementa mais a interface Comparable<Product>
+      tampouco sobrescreve método
+    */
+    list.sort();
+```
 
 ### Seções extras
 
