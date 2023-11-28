@@ -3724,7 +3724,15 @@ Os métodos `equals` e `hashCode` não precisam estar implementados para o que f
 
 ## Aula 247. Exercício de fixação
 
+# Seção 20: Programação funcional e expressões lambda
 
+## Aula 252: Uma experiência com `Comparator`
+
+É importante lembrar que toda vez que implementamos a interface `Comparable`, devemos sobrescrever o método `compareTo`. Uma vez implementado, podemos utilizar a `Collections.sort()` para ordenar uma lista.
+
+Caso desejamos alterar o **critério de comparação**, devemos ir até a classe `Product` e alterar diretamente no método `compareTo`. Em termos de manutenção, isso é indesejável.
+
+Para contornar a situação citada acima, deixará de ser utilizado o `sort()` de `Collections` e passará a ser usado o de `List`.
 
 ### Seções extras
 
