@@ -3752,6 +3752,41 @@ Para contornar a situação citada acima, deixará de ser utilizado o `sort()` d
     list.sort();
 ```
 
+Daí instanciaremos um objeto `Comparable` da seguinte forma:
+
+```java
+    Comparator<Product> comp = new Comparator<Product>() {
+      @Override
+      public int compare(Product p1, Product p2) {
+        return p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase());
+      }
+    };
+
+    list.sort(comp);
+```
+
+Alternativamente, podemos escrever o código acima utilizando as **funções lambda** ou **_arrow functions_**, ficando da seguinte maneira:
+
+```java
+    Comparator<Product> comp = (p1, p2) -> {
+      return p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase());
+    };
+```
+
+Como a função acima só tem uma linha, podemos remover a chaves e o return:
+
+```java
+    Comparator<Product> comp = (p1, p2) -> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase());
+```
+
+Agora que estamos utilizando o `.sort()` de `Collections` podemos substituir acima por:
+
+```java
+    list.sort(
+        (p1, p2) -> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase())
+    );
+```
+
 ### Seções extras
 
 #### DevDojo - Aula 98: IO pt 01 Classe File para arquivos
