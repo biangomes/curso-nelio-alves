@@ -19,8 +19,8 @@ public class Program {
         (p1, p2) -> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase())
     );
 
-    for (Product p : list) {
-      System.out.println(p);
+    for (Product pr : list) {
+      System.out.println(pr);
     }
   }
 }
