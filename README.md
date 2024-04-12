@@ -2006,12 +2006,53 @@ Uma exceção é qualquer **condição de erro** ou **comportamento inesperado**
 
 Em Java, uma exceção é um **objeto herdado da classe**:
 
-- `java.lang.Exception`: o compilador obriga a **tratar** ou **propagar**;
-- `java.lang.RuntimeException`: o compilador **não** obriga a tratar ou propagar.
+- `java.lang.Exception`: tipo de exceção que o compilador obriga a **tratar** ou **propagar**;
+- `java.lang.RuntimeException`: tipo de exceção que o compilador **não** obriga a tratar ou propagar.
 
-Quando lançada, uma exceção é propagada na **pilha de chamadas de métodos em execução**, até que ela seja capturada/tratada ou o programa seja encerrado.
+Quando lançada, uma exceção é propagada na **pilha de chamadas de métodos em execução** (vide _stacktrace_), até que ela seja capturada/tratada ou o programa seja encerrado.
 
-A exception `IndexOutOfBoundsException` é quando se tenta acessar uma posição que **não existe**, ou seja, ultrapassa o `length`. Já a exception `NullPointerException` é quando se é tentado acessar uma variável que recebe `Null`.
+**O que é pilha de chamadas?**
+**R.:** quando uma exceção é disparada por um método, que é chamado em outro método e por aí vai.
+
+A exception `IndexOutOfBoundsException` é quando se tenta acessar uma posição que **não existe**, ou seja, ultrapassa o `length`. Já a exception `NullPointerException` é quando se é tentado acessar uma variável que recebe `null`.
+
+`Throwable`: super classe genérica, "mãe" de todas as exceções e erros. A partir dela, temos as classes `Error` e `Exception`.
+
+#### Classe `Error`
+
+**Referência**: https://docs.oracle.com/javase/10/docs/api/java/lang/Error.html
+
+`Error` é uma classe que estende de `Throwable`, que indica sérios problemas que uma aplicação razoável não deve tentar capturar/tratar.
+Não é requerido que um método use a assinatura `throws` para nenhuma subclasse de `Error`.
+
+**Subclasses de `Error`**:
+
+- `AnnotationFormatError`;
+- `AssertionError`;
+- `AWTError`;
+- `VirtualMachineError`; etc.
+
+#### Classe `Exception`
+
+**Referência**: https://docs.oracle.com/javase/10/docs/api/java/lang/Exception.html
+
+`Exception` é uma classe que estende `Throwable`, que indica condições que uma aplicação pode tratar/capturar.
+Esta classe, Exception, e qualquer subclasse que também **não** são subclasses de `RuntimeException` são **exceções checadas**. Estas
+precisam ser declaradas através da cláusula `throws` em um método ou construtor, caso elas possam ser lançadas na execução do método/construtor.
+
+**Subclasses de `Exception`**:
+
+- `DataFormatException`;
+- `IOException`;
+- `LambdaConversionException`;
+- `MimeTypeParseException`;
+- `NotBoundException`;
+- `ParseException`;
+- `PrinterException`;
+- `XMLParseException`; etc.
+
+Ainda na `Exception`, temos duas subclasses: `IOException`, `RuntimeException`. Esta última especifica exceções que não necessariamente o compilador
+terá que tratar, como `IndexOutOfBoundsException` e `NullPointerException`.
 
 #### Por que exceções?
 
